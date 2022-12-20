@@ -20,8 +20,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private let switchAncOn = Data([0x00, 0x02, 0x0f, 0x01])
   private let switchAncOff = Data([0x00, 0x02, 0x0f, 0x00])
   private let play = Data([0x00, 0x04, 0x03, 0x02])
-  private let pause = Data([0x00, 0x04, 0x03, 0x01])
-  var isAnc = false
+  private let pause = Data([0x00, 0x04, 0x04, 0x01])
+  private let getName = Data([0x00, 0x02, 0x09, 0x00])
+  var isAncOn = false
+  var isPlaying = false
   var characteristic: CBCharacteristic!
 //  @ObservedObject var peripheralViewModel: PeripheralViewModel
 
@@ -87,11 +89,17 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       }
       if characteristic.uuid.uuidString == "C44F42B1-F5CF-479B-B515-9F1BB0099C98" {
         self.characteristic = characteristic
-        if isAnc != true {
-          ancOn()
-        } else {
-          ancOff()
-        }
+
+//        if isAnc != true {
+//          ancOn()
+//        } else {
+//          ancOff()
+//        }
+//        if isPlaying != true {
+//          playCommand()
+//        } else {
+//          pauseCommand()
+//        }
       }
     }
   }
@@ -114,16 +122,28 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func ancOn() {
     print("anc ON")
-    isAnc = true
+    isAncOn = true
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
-    isAnc = false
+    isAncOn = false
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
+  func playCommand() {
+    isPlaying = true
+    guard let characteristic = self.characteristic else { return }
+    myPeripheral.writeValue(play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
+  func pauseCommand() {
+    isPlaying = false
+    guard let characteristic = self.characteristic else { return }
+    myPeripheral.writeValue(pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
 }

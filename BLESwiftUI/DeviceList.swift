@@ -25,7 +25,6 @@ struct DeviceList: View {
                 Spacer()
                 Text(String(peripheral.rssi))
               }
-
             }
           }
         }
