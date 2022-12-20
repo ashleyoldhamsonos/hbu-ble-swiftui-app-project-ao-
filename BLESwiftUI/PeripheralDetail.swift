@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PeripheralDetail: View {
-  @EnvironmentObject var bleManager: BLEManager
-//  @ObservedObject var bleManager: BLEManager
+//  @EnvironmentObject var bleManager: BLEManager
+  @ObservedObject var bleManager: BLEManager
   var peripheral: Peripheral
   @State var ancToggle = false
 
@@ -37,7 +37,7 @@ struct PeripheralDetail: View {
 struct PeripheralDetail_Previews: PreviewProvider {
   static let bleManager = BLEManager()
     static var previews: some View {
-      PeripheralDetail(peripheral: bleManager.peripherals[0])
+      PeripheralDetail(bleManager: bleManager, peripheral: bleManager.peripherals[0])
         .environmentObject(BLEManager())
     }
 }

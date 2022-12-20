@@ -15,7 +15,14 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
   @Published var peripherals = [Peripheral]()
-  let gattServer = "FDFFAAEAB6B833D7E9"
+  private let sonosService = CBUUID(string: "FE07")
+  private let gattServer = "FDFFAAEAB6B833D7E9"
+  private let switchAncOn = Data([0x00, 0x02, 0x0f, 0x01])
+  private let switchAncOff = Data([0x00, 0x02, 0x0f, 0x00])
+  private let play = Data([0x00, 0x04, 0x03, 0x02])
+  private let pause = Data([0x00, 0x04, 0x03, 0x01])
+  var isAnc = false
+  var characteristic: CBCharacteristic!
 //  @ObservedObject var peripheralViewModel: PeripheralViewModel
 
   override init() {
@@ -55,7 +62,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
 //    myPeripheral.discoverServices([CBUUID(string: "0x180F")]) //battery service
-    myPeripheral.discoverServices([CBUUID(string: "FE07")])
+    myPeripheral.discoverServices([sonosService])
   }
 
   func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -76,13 +83,15 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     for characteristic in characteristics {
       if characteristic.uuid.uuidString == "C44F42B1-F5CF-479B-B515-9F1BB0099C99" {
         peripheral.readValue(for: characteristic)
-        peripheral.setNotifyValue(true, for: characteristic)
+//        peripheral.setNotifyValue(true, for: characteristic)
       }
       if characteristic.uuid.uuidString == "C44F42B1-F5CF-479B-B515-9F1BB0099C98" {
-//        let string = "0x00020f01"
-//        let data = string.data(using: String.Encoding(rawValue: NSUTF8StringEncoding))!
-        let ancOn = Data([0x00, 0x02, 0x0f, 0x01])
-        peripheral.writeValue(ancOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+        self.characteristic = characteristic
+        if isAnc != true {
+          ancOn()
+        } else {
+          ancOff()
+        }
       }
     }
   }
@@ -105,10 +114,16 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func ancOn() {
     print("anc ON")
+    isAnc = true
+    guard let characteristic = self.characteristic else { return }
+    myPeripheral.writeValue(switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
+    isAnc = false
+    guard let characteristic = self.characteristic else { return }
+    myPeripheral.writeValue(switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
 }
