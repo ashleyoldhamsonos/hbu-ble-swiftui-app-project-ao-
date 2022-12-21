@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeviceList: View {
   @ObservedObject var bleManager = BLEManager()
-//  @StateObject var peripheralViewModel = PeripheralViewModel()
+//  @ObservedObject var peripheralViewModel = PeripheralViewModel()
   @State var toggle = true
 
   var body: some View {
@@ -28,7 +28,7 @@ struct DeviceList: View {
             }
           }
         }
-        .navigationTitle("Devices")
+        .navigationBarTitle("Devices", displayMode: .automatic)
       }
       Divider()
       Text("STATUS")
@@ -57,7 +57,7 @@ struct DeviceList: View {
           .buttonStyle(GrowingButton())
         }
       }
-      Spacer()
+      //      Spacer()
     }
   }
 }
