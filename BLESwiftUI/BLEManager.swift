@@ -30,7 +30,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   override init() {
     super .init()
     centralManager = CBCentralManager(delegate: self, queue: nil)
-    centralManager.delegate = self
+//    centralManager.delegate = self
   }
 
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -56,8 +56,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       central.connect(myPeripheral)
     }
 
-    let advertisementData = advertisementData.description
-    let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue, advertisingData: advertisementData)
+//    let advertisementData = advertisementData.description
+    let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue)
     print(newPeripheral.name)
     peripherals.append(newPeripheral)
   }

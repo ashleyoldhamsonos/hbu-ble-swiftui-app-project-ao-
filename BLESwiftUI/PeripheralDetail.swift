@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PeripheralDetail: View {
-  @ObservedObject var bleManager: BLEManager
+  @EnvironmentObject var bleManager: BLEManager
   var peripheral: Peripheral
   @State var ancToggle = false
   @State var playToggle = false
@@ -16,7 +16,7 @@ struct PeripheralDetail: View {
     var body: some View {
       Text(peripheral.name)
       Spacer()
-      Text(peripheral.advertisingData)
+//      Text(peripheral.advertisingData)
       Spacer()
       VStack {
         Button {
@@ -51,6 +51,6 @@ struct PeripheralDetail: View {
 struct PeripheralDetail_Previews: PreviewProvider {
   static let bleManager = BLEManager()
     static var previews: some View {
-      PeripheralDetail(bleManager: bleManager, peripheral: bleManager.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33, advertisingData: "ABC"))
+      PeripheralDetail(peripheral: bleManager.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33))
     }
 }

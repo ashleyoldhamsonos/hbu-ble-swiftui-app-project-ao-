@@ -11,5 +11,5 @@ struct Peripheral: Identifiable {
   let id: Int
   let name: String
   let rssi: Int
-  let advertisingData: String
+//  let advertisingData: String
 }

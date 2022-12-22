@@ -18,7 +18,7 @@ struct DeviceList: View {
         List() {
           ForEach(bleManager.peripherals) { peripheral in
             NavigationLink {
-              PeripheralDetail(bleManager: bleManager, peripheral: peripheral)
+              PeripheralDetail(peripheral: peripheral)
             } label: {
               HStack {
                 Text(peripheral.name)
@@ -58,7 +58,7 @@ struct DeviceList: View {
         }
       }
       //      Spacer()
-    }
+    }.environmentObject(bleManager)
   }
 }
 
