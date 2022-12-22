@@ -8,13 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+  
     var body: some View {
-        DeviceList()
+      NavigationView {
+        VStack {
+          DeviceList()
+            .navigationBarTitle("Devices", displayMode: .automatic)
+          Spacer()
+          Divider()
+          ScanControls()
+        }
+      }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+  static let bleManager = BLEManager()
     static var previews: some View {
         ContentView()
+        .environmentObject(bleManager)
     }
 }

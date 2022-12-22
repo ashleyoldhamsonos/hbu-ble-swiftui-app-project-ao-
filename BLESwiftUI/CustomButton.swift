@@ -25,7 +25,7 @@ struct CustomButton: View {
     Button {
       print("clicked")
     } label: {
-      Text("click")
+      Text("click it")
     }.buttonStyle(GrowingButton())
   }
 }

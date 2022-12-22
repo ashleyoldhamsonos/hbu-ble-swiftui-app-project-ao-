@@ -25,7 +25,6 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   var isAncOn = false
   var isPlaying = false
   var characteristic: CBCharacteristic!
-//  @ObservedObject var peripheralViewModel: PeripheralViewModel
 
   override init() {
     super .init()
