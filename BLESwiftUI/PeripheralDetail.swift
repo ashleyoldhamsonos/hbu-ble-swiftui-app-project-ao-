@@ -14,7 +14,7 @@ struct PeripheralDetail: View {
   @State var playToggle = false
 
     var body: some View {
-      Text(peripheral.name)
+      Text("Product Name: \(peripheral.name)")
       Spacer()
 //      Text(peripheral.advertisingData)
       Spacer()
@@ -44,6 +44,9 @@ struct PeripheralDetail: View {
         }
         .buttonStyle(GrowingButton())
       }
+      .navigationTitle(peripheral.name)
+      .navigationBarTitleDisplayMode(.inline)
+
     }
 
 }

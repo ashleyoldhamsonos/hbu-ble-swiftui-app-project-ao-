@@ -16,14 +16,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   @Published var isBluetoothOn = false
   @Published var peripherals = [Peripheral]()
   private let sonosService = CBUUID(string: "FE07")
-  private let gattServer = "FDFFAAEAB6B833D7E9"
   private let switchAncOn = Data([0x00, 0x02, 0x0f, 0x01])
   private let switchAncOff = Data([0x00, 0x02, 0x0f, 0x00])
   private let play = Data([0x00, 0x04, 0x03, 0x02])
   private let pause = Data([0x00, 0x04, 0x04, 0x01])
-  private let getName = Data([0x00, 0x02, 0x09, 0x00])
-  var isAncOn = false
-  var isPlaying = false
+  private let getProductName = Data([0x00, 0x02, 0x09])
+  let batteryLevelService = CBUUID(string: "0x180F")
+  let batteryLevelCharacteristic = CBUUID(string: "0x2A19")
   var characteristic: CBCharacteristic!
 
   override init() {
@@ -49,7 +48,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       peripheralName = "Unknown"
     }
 
-    if peripheralName == "FDFFAAEAB6B833D7E9" {
+    if peripheralName == Constants.gattServer {
       myPeripheral = peripheral
       myPeripheral.delegate = self
       central.connect(myPeripheral)
@@ -82,23 +81,12 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     guard let characteristics = service.characteristics else { return }
 
     for characteristic in characteristics {
-      if characteristic.uuid.uuidString == "C44F42B1-F5CF-479B-B515-9F1BB0099C99" {
+      if characteristic.uuid.uuidString == Constants.readCharacteristic {
         peripheral.readValue(for: characteristic)
 //        peripheral.setNotifyValue(true, for: characteristic)
       }
-      if characteristic.uuid.uuidString == "C44F42B1-F5CF-479B-B515-9F1BB0099C98" {
+      if characteristic.uuid.uuidString == Constants.writeCharacteristic {
         self.characteristic = characteristic
-
-//        if isAnc != true {
-//          ancOn()
-//        } else {
-//          ancOff()
-//        }
-//        if isPlaying != true {
-//          playCommand()
-//        } else {
-//          pauseCommand()
-//        }
       }
     }
   }
@@ -106,7 +94,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
     guard let char = characteristic.value else { return }
 
-    if characteristic.uuid.uuidString == "C44F42B1-F5CF-479B-B515-9F1BB0099C99" {
+    if characteristic.uuid.uuidString == Constants.readCharacteristic {
       print("AAA", char.first as Any)
     }
   }
@@ -121,26 +109,22 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func ancOn() {
     print("anc ON")
-    isAncOn = true
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
-    isAncOn = false
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
-    isPlaying = true
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
-    isPlaying = false
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }

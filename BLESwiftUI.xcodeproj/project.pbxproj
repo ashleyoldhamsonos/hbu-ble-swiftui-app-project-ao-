@@ -18,6 +18,7 @@
 		1F98FA4C2949FED500C07FE3 /* PeripheralDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA4B2949FED500C07FE3 /* PeripheralDetail.swift */; };
 		1F98FA5E295096AD00C07FE3 /* PeripheralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */; };
 		1F98FA6029549F0E00C07FE3 /* ScanControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */; };
+		1F98FA6229561F1E00C07FE3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA6129561F1E00C07FE3 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		1F98FA4B2949FED500C07FE3 /* PeripheralDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralDetail.swift; sourceTree = "<group>"; };
 		1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralViewModel.swift; sourceTree = "<group>"; };
 		1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanControls.swift; sourceTree = "<group>"; };
+		1F98FA6129561F1E00C07FE3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				1F98FA412948B50A00C07FE3 /* BLEManager.swift */,
 				1F98FA432948DE4800C07FE3 /* Peripheral.swift */,
 				1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */,
+				1F98FA6129561F1E00C07FE3 /* Constants.swift */,
 				1F98FA352948AA4C00C07FE3 /* Assets.xcassets */,
 				1F98FA372948AA4C00C07FE3 /* Preview Content */,
 			);
@@ -163,6 +166,7 @@
 				1F98FA6029549F0E00C07FE3 /* ScanControls.swift in Sources */,
 				1F98FA482949D24600C07FE3 /* CustomButton.swift in Sources */,
 				1F98FA422948B50A00C07FE3 /* BLEManager.swift in Sources */,
+				1F98FA6229561F1E00C07FE3 /* Constants.swift in Sources */,
 				1F98FA5E295096AD00C07FE3 /* PeripheralViewModel.swift in Sources */,
 				1F98FA4C2949FED500C07FE3 /* PeripheralDetail.swift in Sources */,
 				1F98FA342948AA4A00C07FE3 /* ContentView.swift in Sources */,
