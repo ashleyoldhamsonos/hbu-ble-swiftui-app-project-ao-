@@ -75,8 +75,8 @@
 				1F98FA4B2949FED500C07FE3 /* PeripheralDetail.swift */,
 				1F98FA412948B50A00C07FE3 /* BLEManager.swift */,
 				1F98FA432948DE4800C07FE3 /* Peripheral.swift */,
-				1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */,
 				1F98FA6129561F1E00C07FE3 /* Constants.swift */,
+				1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */,
 				1F98FA352948AA4C00C07FE3 /* Assets.xcassets */,
 				1F98FA372948AA4C00C07FE3 /* Preview Content */,
 			);

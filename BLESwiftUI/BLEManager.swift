@@ -81,11 +81,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     guard let characteristics = service.characteristics else { return }
 
     for characteristic in characteristics {
-      if characteristic.uuid.uuidString == Constants.readCharacteristic {
+
+      if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
         peripheral.readValue(for: characteristic)
-//        peripheral.setNotifyValue(true, for: characteristic)
+        print("WWW", characteristic.properties)
       }
-      if characteristic.uuid.uuidString == Constants.writeCharacteristic {
+
+      if characteristic.uuid.uuidString == Constants.sonosWriteCharacteristic {
         self.characteristic = characteristic
       }
     }
@@ -94,7 +96,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
     guard let char = characteristic.value else { return }
 
-    if characteristic.uuid.uuidString == Constants.readCharacteristic {
+    if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
+      peripheral.setNotifyValue(true, for: characteristic)
       print("AAA", char.first as Any)
     }
   }
@@ -128,5 +131,6 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     guard let characteristic = self.characteristic else { return }
     myPeripheral.writeValue(pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
+
 
 }
