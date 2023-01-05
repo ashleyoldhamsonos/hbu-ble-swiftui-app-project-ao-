@@ -72,7 +72,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       print("Error reading services")
     } else {
       for service in services {
-        myPeripheral.discoverCharacteristics(nil, for: service)
+//        print("SERVICE UUID", service.uuid)
+        if service.uuid == sonosService {
+          myPeripheral.discoverCharacteristics(nil, for: service)
+        }
       }
     }
   }
@@ -81,24 +84,24 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     guard let characteristics = service.characteristics else { return }
 
     for characteristic in characteristics {
-
+//      print("characteristic UUID", characteristic.uuid)
       if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
+//        peripheral.setNotifyValue(true, for: characteristic)
         peripheral.readValue(for: characteristic)
-        print("WWW", characteristic.properties)
       }
 
       if characteristic.uuid.uuidString == Constants.sonosWriteCharacteristic {
         self.characteristic = characteristic
+//        peripheral.setNotifyValue(true, for: characteristic)
+//        peripheral.readValue(for: characteristic)
       }
     }
   }
 
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    guard let char = characteristic.value else { return }
-
+    print("CHAR", characteristic.value as Any)
     if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
-      peripheral.setNotifyValue(true, for: characteristic)
-      print("AAA", char.first as Any)
+      print("VALUE", characteristic.value?.first as Any)
     }
   }
 
