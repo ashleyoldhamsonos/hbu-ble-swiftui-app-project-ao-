@@ -36,6 +36,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
     if central.state == .poweredOn {
       isBluetoothOn = true
+      centralManager.scanForPeripherals(withServices: [sonosService])
     } else {
       isBluetoothOn = false
     }
@@ -54,6 +55,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       myPeripheral = peripheral
       myPeripheral.delegate = self
       central.connect(myPeripheral)
+      stopScanning()
     }
 
 //    let advertisementData = advertisementData.description
@@ -74,12 +76,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       print("Error reading services")
     } else {
       for service in services {
-//        print("SERVICE UUID", service.uuid)
-        if service.uuid == sonosService {
+//        print("SERVICE", service)
           myPeripheral.discoverCharacteristics(nil, for: service)
-        }
       }
-      print("Discovered Services: \(services)")
+      print("Discovered services: \(services)")
     }
   }
 
@@ -91,8 +91,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     for characteristic in characteristics {
       if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
         readCharacteristic = characteristic
-//        peripheral.setNotifyValue(true, for: readCharacteristic)
-        peripheral.readValue(for: characteristic)
+        myPeripheral.setNotifyValue(true, for: readCharacteristic)
+        myPeripheral.readValue(for: readCharacteristic)
+
         print("read Characteristic: \(readCharacteristic.uuid)")
       }
 
@@ -105,14 +106,19 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    print("CHAR", characteristic.value as Any)
+    guard let data = characteristic.value else { return }
+
+    if let string = String(data: data, encoding: String.Encoding.utf8) {
+      print("String", string as Any)
+    }
     if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
-      print("VALUE", characteristic.value?.first as Any)
+      print("VALUE", data[0])
     }
   }
 
   func startScanning() {
-    centralManager.scanForPeripherals(withServices: nil)
+    peripherals = []
+    centralManager.scanForPeripherals(withServices: [sonosService])
   }
 
   func stopScanning() {
@@ -140,6 +146,5 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     guard let characteristic = self.writeCharacteristic else { return }
     myPeripheral.writeValue(pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
-
 
 }

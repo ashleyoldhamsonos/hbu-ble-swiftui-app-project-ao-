@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ScanControls: View {
   @EnvironmentObject var bleManager: BLEManager
-  @State var toggle = true
 
   var body: some View {
     VStack {
@@ -25,15 +24,9 @@ struct ScanControls: View {
       HStack {
         VStack {
           Button {
-            if toggle {
-              bleManager.startScanning()
-              toggle = false
-            } else {
-              bleManager.stopScanning()
-              toggle = true
-            }
+            bleManager.startScanning()
           } label: {
-            toggle ? Text("Start Scan") : Text("Stop Scan")
+            Text("Start Scan")
           }
           .buttonStyle(GrowingButton())
         }
@@ -44,8 +37,8 @@ struct ScanControls: View {
 
 struct ScanControls_Previews: PreviewProvider {
   static var bleManager = BLEManager()
-    static var previews: some View {
-        ScanControls()
-        .environmentObject(bleManager)
-    }
+  static var previews: some View {
+    ScanControls()
+      .environmentObject(bleManager)
+  }
 }
