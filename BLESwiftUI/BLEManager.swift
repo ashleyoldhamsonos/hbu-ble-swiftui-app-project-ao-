@@ -23,7 +23,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private let getProductName = Data([0x00, 0x02, 0x09])
   let batteryLevelService = CBUUID(string: "0x180F")
   let batteryLevelCharacteristic = CBUUID(string: "0x2A19")
-  var characteristic: CBCharacteristic!
+  private var characteristic: CBCharacteristic!
+  private var readCharacteristic: CBCharacteristic!
+  private var writeCharacteristic: CBCharacteristic!
 
   override init() {
     super .init()
@@ -77,23 +79,27 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
           myPeripheral.discoverCharacteristics(nil, for: service)
         }
       }
+      print("Discovered Services: \(services)")
     }
   }
 
   func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
     guard let characteristics = service.characteristics else { return }
 
+    print("Found \(characteristics.count) characteristics")
+
     for characteristic in characteristics {
-//      print("characteristic UUID", characteristic.uuid)
       if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
-//        peripheral.setNotifyValue(true, for: characteristic)
+        readCharacteristic = characteristic
+//        peripheral.setNotifyValue(true, for: readCharacteristic)
         peripheral.readValue(for: characteristic)
+        print("read Characteristic: \(readCharacteristic.uuid)")
       }
 
       if characteristic.uuid.uuidString == Constants.sonosWriteCharacteristic {
-        self.characteristic = characteristic
-//        peripheral.setNotifyValue(true, for: characteristic)
-//        peripheral.readValue(for: characteristic)
+        writeCharacteristic = characteristic
+        print("write Characteristic: \(writeCharacteristic.uuid)")
+//        self.characteristic = characteristic
       }
     }
   }
@@ -115,23 +121,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func ancOn() {
     print("anc ON")
-    guard let characteristic = self.characteristic else { return }
+    guard let characteristic = self.writeCharacteristic else { return }
     myPeripheral.writeValue(switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
-    guard let characteristic = self.characteristic else { return }
+    guard let characteristic = self.writeCharacteristic else { return }
     myPeripheral.writeValue(switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
-    guard let characteristic = self.characteristic else { return }
+    guard let characteristic = self.writeCharacteristic else { return }
     myPeripheral.writeValue(play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
-    guard let characteristic = self.characteristic else { return }
+    guard let characteristic = self.writeCharacteristic else { return }
     myPeripheral.writeValue(pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
