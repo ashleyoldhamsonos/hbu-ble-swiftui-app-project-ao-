@@ -11,18 +11,10 @@ import SwiftUI
 
 class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
-  var centralManager: CBCentralManager!
-  var myPeripheral: CBPeripheral!
+  private var centralManager: CBCentralManager!
+  private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
   @Published var peripherals = [Peripheral]()
-  private let sonosService = CBUUID(string: "FE07")
-  private let switchAncOn = Data([0x00, 0x02, 0x0f, 0x01])
-  private let switchAncOff = Data([0x00, 0x02, 0x0f, 0x00])
-  private let play = Data([0x00, 0x04, 0x03, 0x02])
-  private let pause = Data([0x00, 0x04, 0x04, 0x01])
-  private let getProductName = Data([0x00, 0x02, 0x09])
-  let batteryLevelService = CBUUID(string: "0x180F")
-  let batteryLevelCharacteristic = CBUUID(string: "0x2A19")
   private var characteristic: CBCharacteristic!
   private var readCharacteristic: CBCharacteristic!
   private var writeCharacteristic: CBCharacteristic!
@@ -36,7 +28,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
     if central.state == .poweredOn {
       isBluetoothOn = true
-      centralManager.scanForPeripherals(withServices: [sonosService])
+      centralManager.scanForPeripherals(withServices: [Constants.sonosService])
     } else {
       isBluetoothOn = false
     }
@@ -66,7 +58,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
 //    myPeripheral.discoverServices([CBUUID(string: "0x180F")]) //battery service
-    myPeripheral.discoverServices([sonosService])
+    myPeripheral.discoverServices([Constants.sonosService])
   }
 
   func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -108,17 +100,26 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
     guard let data = characteristic.value else { return }
 
-    if let string = String(data: data, encoding: String.Encoding.utf8) {
-      print("String", string as Any)
+//    if let string = String(data: data, encoding: String.Encoding.utf8) {
+//      print("String", string as Any)
+//    }
+    if error != nil {
+      print("didUpdateValeFor", error!)
     }
     if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
       print("VALUE", data[0])
     }
   }
 
+  func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+    if error != nil {
+      print(error!)
+    }
+  }
+
   func startScanning() {
     peripherals = []
-    centralManager.scanForPeripherals(withServices: [sonosService])
+    centralManager.scanForPeripherals(withServices: [Constants.sonosService])
   }
 
   func stopScanning() {
@@ -128,23 +129,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func ancOn() {
     print("anc ON")
     guard let characteristic = self.writeCharacteristic else { return }
-    myPeripheral.writeValue(switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
     guard let characteristic = self.writeCharacteristic else { return }
-    myPeripheral.writeValue(switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
     guard let characteristic = self.writeCharacteristic else { return }
-    myPeripheral.writeValue(play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
     guard let characteristic = self.writeCharacteristic else { return }
-    myPeripheral.writeValue(pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
 }
