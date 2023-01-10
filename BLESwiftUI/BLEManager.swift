@@ -81,7 +81,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     print("Found \(characteristics.count) characteristics")
 
     for characteristic in characteristics {
-      if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
+      if characteristic.uuid.uuidString == Constants.sonosOUTCharacteristic {
         readCharacteristic = characteristic
         myPeripheral.setNotifyValue(true, for: readCharacteristic)
         myPeripheral.readValue(for: readCharacteristic)
@@ -89,7 +89,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
         print("read Characteristic: \(readCharacteristic.uuid)")
       }
 
-      if characteristic.uuid.uuidString == Constants.sonosWriteCharacteristic {
+      if characteristic.uuid.uuidString == Constants.sonosINCharacteristic {
         writeCharacteristic = characteristic
         print("write Characteristic: \(writeCharacteristic.uuid)")
 //        self.characteristic = characteristic
@@ -100,13 +100,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
     guard let data = characteristic.value else { return }
 
-//    if let string = String(data: data, encoding: String.Encoding.utf8) {
-//      print("String", string as Any)
-//    }
     if error != nil {
       print("didUpdateValeFor", error!)
     }
-    if characteristic.uuid.uuidString == Constants.sonosReadCharacteristic {
+    if characteristic.uuid.uuidString == Constants.sonosOUTCharacteristic {
       print("VALUE", data[0])
     }
   }
