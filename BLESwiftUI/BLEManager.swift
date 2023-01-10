@@ -16,8 +16,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   @Published var isBluetoothOn = false
   @Published var peripherals = [Peripheral]()
   private var characteristic: CBCharacteristic!
-  private var readCharacteristic: CBCharacteristic!
-  private var writeCharacteristic: CBCharacteristic!
+  private var outCharacteristic: CBCharacteristic!
+  private var inCharacteristic: CBCharacteristic!
 
   override init() {
     super .init()
@@ -26,11 +26,31 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
-    if central.state == .poweredOn {
+//    if central.state == .poweredOn {
+//      isBluetoothOn = true
+//      centralManager.scanForPeripherals(withServices: [Constants.sonosService])
+//    } else {
+//      isBluetoothOn = false
+//    }
+
+    switch central.state {
+    case .poweredOn:
+      print("Is powered on")
       isBluetoothOn = true
       centralManager.scanForPeripherals(withServices: [Constants.sonosService])
-    } else {
+    case .poweredOff:
+      print("Is powered off")
       isBluetoothOn = false
+    case .unsupported:
+      print("Is unsupported")
+    case .unauthorized:
+      print("Is unauthorised")
+    case .unknown:
+      print("Is unknown")
+    case .resetting:
+      print("Resetting")
+    @unknown default:
+      print("Error")
     }
   }
 
@@ -78,22 +98,31 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
     guard let characteristics = service.characteristics else { return }
 
+    var foundOutCharacteristic = false
+    var foundInCharacteristic = false
+
     print("Found \(characteristics.count) characteristics")
 
     for characteristic in characteristics {
       if characteristic.uuid.uuidString == Constants.sonosOUTCharacteristic {
-        readCharacteristic = characteristic
-        myPeripheral.setNotifyValue(true, for: readCharacteristic)
-        myPeripheral.readValue(for: readCharacteristic)
+        outCharacteristic = characteristic
+        myPeripheral.setNotifyValue(true, for: outCharacteristic)
+        myPeripheral.readValue(for: outCharacteristic)
+        foundOutCharacteristic = true
 
-        print("read Characteristic: \(readCharacteristic.uuid)")
+        print("read Characteristic: \(outCharacteristic.uuid)")
       }
 
       if characteristic.uuid.uuidString == Constants.sonosINCharacteristic {
-        writeCharacteristic = characteristic
-        print("write Characteristic: \(writeCharacteristic.uuid)")
+        inCharacteristic = characteristic
+        print("write Characteristic: \(inCharacteristic.uuid)")
+        foundInCharacteristic = true
 //        self.characteristic = characteristic
       }
+    }
+
+    if !foundInCharacteristic || !foundOutCharacteristic {
+      print("Error finding Gatt Characteristics")
     }
   }
 
@@ -125,23 +154,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func ancOn() {
     print("anc ON")
-    guard let characteristic = self.writeCharacteristic else { return }
+    guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
-    guard let characteristic = self.writeCharacteristic else { return }
+    guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
-    guard let characteristic = self.writeCharacteristic else { return }
+    guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
-    guard let characteristic = self.writeCharacteristic else { return }
+    guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
