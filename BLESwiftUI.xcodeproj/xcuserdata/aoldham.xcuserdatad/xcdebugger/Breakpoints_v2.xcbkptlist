@@ -14,8 +14,8 @@
             filePath = "BLESwiftUI/BLEManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -78,9 +78,9 @@
             filePath = "BLESwiftUI/BLEManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
-            landmarkName = "peripheral(_:didDiscoverCharacteristicsFor:error:)"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "peripheral(_:didUpdateNotificationStateFor:error:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -94,10 +94,10 @@
             filePath = "BLESwiftUI/BLEManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "peripheral(_:didUpdateValueFor:error:)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -113,7 +113,7 @@
             startingLineNumber = "131"
             endingLineNumber = "131"
             landmarkName = "peripheral(_:didUpdateValueFor:error:)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -129,7 +129,7 @@
             startingLineNumber = "129"
             endingLineNumber = "129"
             landmarkName = "peripheral(_:didUpdateValueFor:error:)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -145,7 +145,7 @@
             startingLineNumber = "135"
             endingLineNumber = "135"
             landmarkName = "peripheral(_:didUpdateValueFor:error:)"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

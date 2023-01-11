@@ -133,13 +133,16 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       print("didUpdateValeFor", error!)
     }
     if characteristic.uuid.uuidString == Constants.sonosOUTCharacteristic {
-      print("VALUE", data[0])
+      myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
+      print("VALUE", data)
     }
   }
 
   func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
     if error != nil {
       print(error!)
+    } else {
+      print("Will receive notifications")
     }
   }
 
@@ -155,23 +158,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func ancOn() {
     print("anc ON")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
 }
