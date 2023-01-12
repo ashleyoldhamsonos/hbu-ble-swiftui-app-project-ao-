@@ -25,6 +25,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 //    centralManager.delegate = self
   }
 
+  // MARK: Central Manager methods
+
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
 //    if central.state == .poweredOn {
 //      isBluetoothOn = true
@@ -81,6 +83,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.discoverServices([Constants.sonosService])
   }
 
+  // MARK: Peripheral methods
+
   func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
     guard let services = peripheral.services else { return }
 
@@ -88,8 +92,11 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       print("Error reading services")
     } else {
       for service in services {
-//        print("SERVICE", service)
+        if service.uuid == Constants.sonosService {
+          myPeripheral.discoverCharacteristics([Constants.sonosINCharacteristic, Constants.sonosOUTCharacteristic], for: service)
+        } else {
           myPeripheral.discoverCharacteristics(nil, for: service)
+        }
       }
       print("Discovered services: \(services)")
     }
@@ -101,23 +108,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     var foundOutCharacteristic = false
     var foundInCharacteristic = false
 
-    print("Found \(characteristics.count) characteristics")
+//    print("Found \(characteristics.count) characteristics")
 
     for characteristic in characteristics {
-      if characteristic.uuid.uuidString == Constants.sonosOUTCharacteristic {
+
+      if characteristic.uuid == Constants.sonosOUTCharacteristic {
         outCharacteristic = characteristic
         myPeripheral.setNotifyValue(true, for: outCharacteristic)
         myPeripheral.readValue(for: outCharacteristic)
-        foundOutCharacteristic = true
 
-        print("read Characteristic: \(outCharacteristic.uuid)")
+        foundOutCharacteristic = true
       }
 
-      if characteristic.uuid.uuidString == Constants.sonosINCharacteristic {
+      if characteristic.uuid == Constants.sonosINCharacteristic {
         inCharacteristic = characteristic
-        print("write Characteristic: \(inCharacteristic.uuid)")
+        getGattSettings(characteristic: inCharacteristic)
+
         foundInCharacteristic = true
-//        self.characteristic = characteristic
       }
     }
 
@@ -126,15 +133,34 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     }
   }
 
+  /// decodes data once triggered with change of OUTCharacterisitc
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    guard let data = characteristic.value else { return }
+    guard let data = characteristic.value, let byte = data.first else { return }
 
     if error != nil {
-      print("didUpdateValeFor", error!)
+      print("Error reading characteristic value", error!)
     }
-    if characteristic.uuid.uuidString == Constants.sonosOUTCharacteristic {
-      myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
-      print("VALUE", data)
+    if characteristic.uuid == Constants.sonosOUTCharacteristic {
+//      print("VALUE", data[3])
+      switch byte {
+      case 0:
+        print("0th bit")
+      case 1:
+        print("1st bit")
+      case 2:
+        print(String(data: data, encoding: .utf8) as Any)
+      case 3:
+        print("3rd bit")
+      case 4:
+        print("4th bit")
+      case 5:
+        print("5th bit")
+      case 6:
+        print("6th bit")
+      default:
+        print("Other")
+      }
+
     }
   }
 
@@ -145,6 +171,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       print("Will receive notifications")
     }
   }
+
+  // MARK: Class functions
 
   func startScanning() {
     peripherals = []
@@ -175,6 +203,12 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func pauseCommand() {
     guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.DukeCommand.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
+  func getGattSettings(characteristic: CBCharacteristic) {
+//    myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
+//    myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
   }
 
 }
