@@ -10,15 +10,26 @@ import SwiftUI
 struct PeripheralDetail: View {
   @EnvironmentObject var bleManager: BLEManager
   var peripheral: Peripheral
-  @State var ancToggle = false
-  @State var playToggle = false
+  var device: DeviceModel
+  @State private var ancToggle = false
+  @State private var playToggle = false
+  @State private var spatialToggle = false
 
     var body: some View {
-      Text("Product Name: \(peripheral.name)")
       Spacer()
+      Text("Product Name: \(peripheral.name)")
 //      Text(peripheral.advertisingData)
+      Text("Device Name: \(device.name ?? "name unknown")")
+      Text("Spatial Audio: \(device.getSpatialAudio ?? "unavailable")")
       Spacer()
       VStack {
+        Toggle("Spatial Audio", isOn: $spatialToggle)
+
+        if spatialToggle {
+          // handle label for ON
+        } else {
+          // handle label for OFF
+        }
         Button {
           if ancToggle != true {
             bleManager.ancOn()
@@ -54,6 +65,6 @@ struct PeripheralDetail: View {
 struct PeripheralDetail_Previews: PreviewProvider {
   static let bleManager = BLEManager()
     static var previews: some View {
-      PeripheralDetail(peripheral: bleManager.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33))
+      PeripheralDetail(peripheral: bleManager.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel())
     }
 }
