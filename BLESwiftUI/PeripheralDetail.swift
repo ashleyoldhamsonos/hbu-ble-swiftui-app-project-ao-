@@ -20,28 +20,36 @@ struct PeripheralDetail: View {
       Text("Product Name: \(peripheral.name)")
 //      Text(peripheral.advertisingData)
       Text("Device Name: \(device.name ?? "name unknown")")
-      Text("Spatial Audio: \(device.getSpatialAudio ?? "unavailable")")
+//      Text("Spatial Audio: \(device.getSpatialAudio ?? "unavailable")")
       Spacer()
       VStack {
-        Toggle("Spatial Audio", isOn: $spatialToggle)
-
-        if spatialToggle {
-          // handle label for ON
-        } else {
-          // handle label for OFF
-        }
-        Button {
-          if ancToggle != true {
-            bleManager.ancOn()
-            ancToggle = true
-          } else {
+        Toggle(isOn: $spatialToggle, label: {
+          Text("Spacial Audio")
+        }).onChange(of: spatialToggle, perform: { newValue in
+//          print(newValue)
+          newValue ? bleManager.spatialAudioOn() : bleManager.spatialAudioOff()
+        })
+        Toggle(isOn: $ancToggle, label: {
+          Text("ANC")
+        }).onChange(of: ancToggle, perform: { newValue in
+          if !newValue {
             bleManager.ancOff()
-            ancToggle = false
+          } else {
+            bleManager.ancOn()
           }
-        } label: {
-          ancToggle ? Text("ANC Off") : Text("ANC On")
-        }
-      .buttonStyle(GrowingButton())
+        })
+//        Button {
+//          if ancToggle != true {
+//            bleManager.ancOn()
+//            ancToggle = true
+//          } else {
+//            bleManager.ancOff()
+//            ancToggle = false
+//          }
+//        } label: {
+//          ancToggle ? Text("ANC Off") : Text("ANC On")
+//        }
+//      .buttonStyle(GrowingButton())
         Button {
           if playToggle != true {
             bleManager.playCommand()
@@ -57,6 +65,7 @@ struct PeripheralDetail: View {
       }
       .navigationTitle(peripheral.name)
       .navigationBarTitleDisplayMode(.inline)
+      .padding()
 
     }
 

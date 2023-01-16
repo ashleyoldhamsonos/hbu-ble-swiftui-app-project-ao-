@@ -24,6 +24,8 @@ struct Constants {
     static let pause = Data([0x00, 0x04, 0x04, 0x01])
     static let getProductName = Data([0x00, 0x02, 0x09])
     static let getSpatialAudioMode = Data([0x00, 0x02, 0x12])
+    static let spatialAudioModeOn = Data([0x00, 0x02, 0x13, 0x01])
+    static let spatialAudioModeOff = Data([0x00, 0x02, 0x13, 0x00])
   }
 
 }

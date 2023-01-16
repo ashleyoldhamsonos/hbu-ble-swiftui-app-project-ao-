@@ -136,37 +136,12 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   /// decodes data once triggered with change of OUTCharacterisitc
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-    guard let data = characteristic.value, let byte = data.first else { return }
 
     if error != nil {
       print("Error reading characteristic value", error!)
     }
     if characteristic.uuid == Constants.sonosOUTCharacteristic {
       parseGattCharacteristic(characteristic: characteristic)
-//      print("VALUE", byte)
-//      switch byte {
-//      case 0:
-//        print("0th bit")
-//      case 1:
-//        print("1st bit")
-//      case 2:
-//        print((String(data: data[4...], encoding: .utf8) ?? "not encoding"))
-//        let encodedResult = (String(data: data[4...], encoding: .utf8) ?? "not encoding")
-//        devices.name = encodedResult
-////        let newDevice = DeviceModel(id: devices.count, name: result)
-////        devices.append(newDevice)
-//      case 3:
-//        print("3rd bit")
-//      case 4:
-//        print("4th bit")
-//      case 5:
-//        print("5th bit")
-//      case 6:
-//        print("6th bit")
-//      default:
-//        print("Other")
-//      }
-
     }
   }
 
@@ -211,6 +186,18 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.writeValue(Constants.DukeCommand.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
+  func spatialAudioOn() {
+    print("spatial on")
+    guard let characteristic = self.inCharacteristic else { return }
+    myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
+  func spatialAudioOff() {
+    print("spatial off")
+    guard let characteristic = self.inCharacteristic else { return }
+    myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
   func getGattSettings(characteristic: CBCharacteristic) {
     myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
@@ -220,7 +207,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func parseGattCharacteristic(characteristic: CBCharacteristic) {
     guard let data = characteristic.value else { return }
 
-    print("DATA", data[3])
+//    print("DATA", data[3])
 
     switch data[2] {
     case 9: //product name
