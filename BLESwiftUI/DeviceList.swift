@@ -18,6 +18,7 @@ struct DeviceList: View {
             PeripheralDetail(peripheral: peripheral, device: bleManager.devices)
           } label: {
             HStack {
+              Image(systemName: peripheral.icon)
               Text(peripheral.name)
               Spacer()
               Text(String(peripheral.rssi))

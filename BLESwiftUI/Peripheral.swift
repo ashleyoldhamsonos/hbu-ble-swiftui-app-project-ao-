@@ -11,5 +11,17 @@ struct Peripheral: Identifiable {
   let id: Int
   let name: String
   let rssi: Int
+  var icon: String {
+    return getIconName(name)
+  }
 //  let advertisingData: String
+
+  func getIconName(_ peripheralName: String) -> String {
+    switch peripheralName {
+    case Constants.gattServer:
+      return "headphones.circle"
+    default:
+      return "hifispeaker"
+    }
+  }
 }
