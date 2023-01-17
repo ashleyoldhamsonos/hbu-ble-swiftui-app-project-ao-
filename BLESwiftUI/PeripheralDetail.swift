@@ -38,18 +38,6 @@ struct PeripheralDetail: View {
             bleManager.ancOn()
           }
         })
-//        Button {
-//          if ancToggle != true {
-//            bleManager.ancOn()
-//            ancToggle = true
-//          } else {
-//            bleManager.ancOff()
-//            ancToggle = false
-//          }
-//        } label: {
-//          ancToggle ? Text("ANC Off") : Text("ANC On")
-//        }
-//      .buttonStyle(GrowingButton())
         Button {
           if playToggle != true {
             bleManager.playCommand()
