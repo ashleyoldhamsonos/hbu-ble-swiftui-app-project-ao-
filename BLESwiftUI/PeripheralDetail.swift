@@ -44,9 +44,9 @@ struct PeripheralDetail: View {
         Button {
           bleManager.skipToPreviousTrack()
         } label: {
-          Image(systemName: "backward.end")
+          Image(systemName: Constants.PlaybackControlButton.previousTrackImage)
             .resizable()
-            .frame(width: Constants.PlaybackControlButton.skipPreviousTrack, height: Constants.PlaybackControlButton.skipPreviousTrack)
+            .frame(width: Constants.PlaybackControlButton.skipPreviousTrackWidth, height: Constants.PlaybackControlButton.skipPreviousTrackHeight)
             .foregroundColor(.white)
         }
         Button {
@@ -59,11 +59,11 @@ struct PeripheralDetail: View {
           }
         } label: {
           playToggle ?
-          Image(systemName: "pause.circle")
+          Image(systemName: Constants.PlaybackControlButton.pauseImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
             .foregroundColor(.white) :
-          Image(systemName: "play.circle")
+          Image(systemName: Constants.PlaybackControlButton.playImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
             .foregroundColor(.white)
@@ -72,9 +72,9 @@ struct PeripheralDetail: View {
         Button {
           bleManager.skipToNextTrack()
         } label: {
-          Image(systemName: "forward.end")
+          Image(systemName: Constants.PlaybackControlButton.nextTrackImage)
             .resizable()
-            .frame(width: Constants.PlaybackControlButton.skipNextTrack, height: Constants.PlaybackControlButton.skipNextTrack)
+            .frame(width: Constants.PlaybackControlButton.skipNextTrackWidth, height: Constants.PlaybackControlButton.skipNextTrackHeight)
             .foregroundColor(.white)
         }
       }

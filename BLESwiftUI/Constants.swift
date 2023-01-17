@@ -31,10 +31,16 @@ struct Constants {
   }
 
   struct PlaybackControlButton {
+    static let playImage = "play.circle"
+    static let pauseImage = "pause.circle"
+    static let nextTrackImage = "forward.end"
+    static let previousTrackImage = "backward.end"
     static let playPauseWidth: CGFloat = 70
     static let playPauseHeight: CGFloat = 70
-    static let skipNextTrack: CGFloat = 20
-    static let skipPreviousTrack: CGFloat = 20
+    static let skipNextTrackWidth: CGFloat = 20
+    static let skipNextTrackHeight: CGFloat = 20
+    static let skipPreviousTrackWidth: CGFloat = 20
+    static let skipPreviousTrackHeight: CGFloat = 20
   }
 
 }
