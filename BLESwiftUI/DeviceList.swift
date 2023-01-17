@@ -25,6 +25,9 @@ struct DeviceList: View {
           }
         }
       }
+      .refreshable {
+        bleManager.startScanning()
+      }
     }
   }
 }

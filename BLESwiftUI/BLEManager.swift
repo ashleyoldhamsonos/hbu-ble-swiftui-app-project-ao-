@@ -212,13 +212,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     switch data[2] {
     case 9: //product name
       self.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
-      print(String(data: data[4...], encoding: .utf8) as Any)
+//      print(String(data: data[4...], encoding: .utf8) as Any)
     case 14: //get anc mode: Bool
       (data[3] == 0) ? (self.devices.getANCMode = "Off") : (self.devices.getANCMode = "On")
-      print("GET_ANC_MODE", data[3])
+//      print("GET_ANC_MODE", data[3])
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (self.devices.getSpatialAudio = "Off") : (self.devices.getSpatialAudio = "On")
-      print("GET_SPATIAL_AUDIO", data[3])
+//      print("GET_SPATIAL_AUDIO", data[3])
     default:
       print("default")
     }
