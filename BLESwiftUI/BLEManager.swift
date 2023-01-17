@@ -29,12 +29,6 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   // MARK: Central Manager methods
 
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
-//    if central.state == .poweredOn {
-//      isBluetoothOn = true
-//      centralManager.scanForPeripherals(withServices: [Constants.sonosService])
-//    } else {
-//      isBluetoothOn = false
-//    }
 
     switch central.state {
     case .poweredOn:
@@ -177,13 +171,27 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func playCommand() {
+    print("play")
     guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.DukeCommand.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
+    print("pause")
     guard let characteristic = self.inCharacteristic else { return }
     myPeripheral.writeValue(Constants.DukeCommand.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
+  func skipToNextTrack() {
+    print("next track")
+    guard let characteristic = self.inCharacteristic else { return }
+    myPeripheral.writeValue(Constants.DukeCommand.skipToNextTrack, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
+  func skipToPreviousTrack() {
+    print("previous track")
+    guard let characteristic = self.inCharacteristic else { return }
+    myPeripheral.writeValue(Constants.DukeCommand.skipToPreviousTrack, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func spatialAudioOn() {
@@ -212,16 +220,12 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     switch data[2] {
     case 9: //product name
       self.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
-//      print(String(data: data[4...], encoding: .utf8) as Any)
     case 14: //get anc mode: Bool
       (data[3] == 0) ? (self.devices.getANCMode = "Off") : (self.devices.getANCMode = "On")
-//      print("GET_ANC_MODE", data[3])
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (self.devices.getSpatialAudio = "Off") : (self.devices.getSpatialAudio = "On")
-//      print("GET_SPATIAL_AUDIO", data[3])
     default:
       print("default")
     }
   }
-
 }

@@ -20,12 +20,21 @@ struct Constants {
     static let getAncMode = Data([0x00, 0x02, 0x0e])
     static let switchAncOn = Data([0x00, 0x02, 0x0f, 0x01])
     static let switchAncOff = Data([0x00, 0x02, 0x0f, 0x00])
-    static let play = Data([0x00, 0x04, 0x03, 0x02])
-    static let pause = Data([0x00, 0x04, 0x04, 0x01])
+    static let play = Data([0x00, 0x04, 0x03])
+    static let pause = Data([0x00, 0x04, 0x04])
+    static let skipToNextTrack = Data([0x00, 0x04, 0x06])
+    static let skipToPreviousTrack = Data([0x00, 0x04, 0x05])
     static let getProductName = Data([0x00, 0x02, 0x09])
     static let getSpatialAudioMode = Data([0x00, 0x02, 0x12])
     static let spatialAudioModeOn = Data([0x00, 0x02, 0x13, 0x01])
     static let spatialAudioModeOff = Data([0x00, 0x02, 0x13, 0x00])
+  }
+
+  struct PlaybackControlButton {
+    static let playPauseWidth: CGFloat = 70
+    static let playPauseHeight: CGFloat = 70
+    static let skipNextTrack: CGFloat = 20
+    static let skipPreviousTrack: CGFloat = 20
   }
 
 }
