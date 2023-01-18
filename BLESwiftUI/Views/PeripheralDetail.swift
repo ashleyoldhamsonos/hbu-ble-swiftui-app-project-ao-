@@ -14,6 +14,7 @@ struct PeripheralDetail: View {
   @State private var ancToggle = false
   @State private var playToggle = false
   @State private var spatialToggle = false
+  @State private var enabledControls = false
 
   var body: some View {
     Spacer()
@@ -31,6 +32,7 @@ struct PeripheralDetail: View {
       }).onChange(of: spatialToggle, perform: { newValue in
         newValue ? bleManager.spatialAudioOn() : bleManager.spatialAudioOff()
       })
+      .disabled(peripheral.name == Constants.gattServer ? false : true)
       Toggle(isOn: $ancToggle, label: {
         Text("ANC")
       }).onChange(of: ancToggle, perform: { newValue in
@@ -40,6 +42,7 @@ struct PeripheralDetail: View {
           bleManager.ancOn()
         }
       })
+      .disabled(peripheral.name == Constants.gattServer ? false : true)
       HStack(spacing: 40) {
         Button {
           bleManager.skipToPreviousTrack()
