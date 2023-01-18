@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ScanControls: View {
   @EnvironmentObject var bleManager: BLEManager
+  @EnvironmentObject var viewModel: PeripheralViewModel
 
   var body: some View {
     VStack {
@@ -24,7 +25,7 @@ struct ScanControls: View {
       HStack {
         VStack {
           Button {
-            bleManager.startScanning()
+            viewModel.startScanning()
           } label: {
             Text("Start Scan")
           }

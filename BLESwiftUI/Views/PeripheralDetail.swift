@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct PeripheralDetail: View {
-  @EnvironmentObject var bleManager: BLEManager
+//  @EnvironmentObject var bleManager: BLEManager
+  @EnvironmentObject var viewModel: PeripheralViewModel
   var peripheral: Peripheral
   var device: DeviceModel
   @State private var ancToggle = false
@@ -30,22 +31,22 @@ struct PeripheralDetail: View {
       Toggle(isOn: $spatialToggle, label: {
         Text("Spatial Audio")
       }).onChange(of: spatialToggle, perform: { newValue in
-        newValue ? bleManager.spatialAudioOn() : bleManager.spatialAudioOff()
+        newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
       })
       .disabled(peripheral.name == Constants.gattServer ? false : true)
       Toggle(isOn: $ancToggle, label: {
         Text("ANC")
       }).onChange(of: ancToggle, perform: { newValue in
         if !newValue {
-          bleManager.ancOff()
+          viewModel.ancOff()
         } else {
-          bleManager.ancOn()
+          viewModel.ancOn()
         }
       })
       .disabled(peripheral.name == Constants.gattServer ? false : true)
       HStack(spacing: 40) {
         Button {
-          bleManager.skipToPreviousTrack()
+          viewModel.skipToPreviousTrack()
         } label: {
           Image(systemName: Constants.PlaybackControlButton.previousTrackImage)
             .resizable()
@@ -54,10 +55,10 @@ struct PeripheralDetail: View {
         }
         Button {
           if playToggle != true {
-            bleManager.playCommand()
+            viewModel.playCommand()
             playToggle = true
           } else {
-            bleManager.pauseCommand()
+            viewModel.pauseCommand()
             playToggle = false
           }
         } label: {
@@ -73,7 +74,7 @@ struct PeripheralDetail: View {
         }
         .controlSize(.regular)
         Button {
-          bleManager.skipToNextTrack()
+          viewModel.skipToNextTrack()
         } label: {
           Image(systemName: Constants.PlaybackControlButton.nextTrackImage)
             .resizable()

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DeviceList: View {
   @EnvironmentObject var bleManager: BLEManager
+  @EnvironmentObject var viewModel: PeripheralViewModel
 
   var body: some View {
     VStack {
@@ -27,7 +28,8 @@ struct DeviceList: View {
         }
       }
       .refreshable {
-        bleManager.startScanning()
+//        bleManager.startScanning()
+        viewModel.startScanning()
       }
     }
   }

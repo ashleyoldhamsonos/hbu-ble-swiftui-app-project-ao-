@@ -31,5 +31,29 @@ class PeripheralViewModel: ObservableObject {
   func ancOff() {
     bleManager.ancOff()
   }
+
+  func spatialAudioOn() {
+    bleManager.spatialAudioOn()
+  }
+
+  func spatialAudioOff() {
+    bleManager.spatialAudioOff()
+  }
+
+  func playCommand() {
+    bleManager.playCommand()
+  }
+
+  func pauseCommand() {
+    bleManager.pauseCommand()
+  }
+
+  func skipToPreviousTrack() {
+    bleManager.skipToPreviousTrack()
+  }
+
+  func skipToNextTrack() {
+    bleManager.skipToNextTrack()
+  }
   
 }
