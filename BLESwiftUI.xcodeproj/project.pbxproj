@@ -69,17 +69,11 @@
 		1F98FA302948AA4A00C07FE3 /* BLESwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				1F98FA312948AA4A00C07FE3 /* BLESwiftUIApp.swift */,
-				1F98FA332948AA4A00C07FE3 /* ContentView.swift */,
-				1F98FA3F2948AC3B00C07FE3 /* DeviceList.swift */,
-				1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */,
-				1F98FA472949D24600C07FE3 /* CustomButton.swift */,
-				1F98FA4B2949FED500C07FE3 /* PeripheralDetail.swift */,
-				1F98FA412948B50A00C07FE3 /* BLEManager.swift */,
-				1F98FA432948DE4800C07FE3 /* Peripheral.swift */,
-				1FC7051C29706C0000EB191B /* DeviceModel.swift */,
+				1FC7051F2977052700EB191B /* Views */,
+				1FC7051E2977050100EB191B /* Models */,
+				1FC70520297705E100EB191B /* Services */,
+				1FC705212977061B00EB191B /* ViewModels */,
 				1F98FA6129561F1E00C07FE3 /* Constants.swift */,
-				1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */,
 				1F98FA352948AA4C00C07FE3 /* Assets.xcassets */,
 				1F98FA372948AA4C00C07FE3 /* Preview Content */,
 			);
@@ -92,6 +86,44 @@
 				1F98FA382948AA4C00C07FE3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1FC7051E2977050100EB191B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1FC7051C29706C0000EB191B /* DeviceModel.swift */,
+				1F98FA432948DE4800C07FE3 /* Peripheral.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1FC7051F2977052700EB191B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1F98FA312948AA4A00C07FE3 /* BLESwiftUIApp.swift */,
+				1F98FA332948AA4A00C07FE3 /* ContentView.swift */,
+				1F98FA3F2948AC3B00C07FE3 /* DeviceList.swift */,
+				1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */,
+				1F98FA472949D24600C07FE3 /* CustomButton.swift */,
+				1F98FA4B2949FED500C07FE3 /* PeripheralDetail.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1FC70520297705E100EB191B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1F98FA412948B50A00C07FE3 /* BLEManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1FC705212977061B00EB191B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1F98FA5D295096AD00C07FE3 /* PeripheralViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
