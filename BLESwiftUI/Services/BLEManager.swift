@@ -93,7 +93,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
           myPeripheral.discoverCharacteristics(nil, for: service)
         }
       }
-      print("Discovered services: \(services)")
+//      print("Discovered services: \(services)")
     }
   }
 

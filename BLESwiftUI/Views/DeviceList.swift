@@ -28,7 +28,6 @@ struct DeviceList: View {
         }
       }
       .refreshable {
-//        bleManager.startScanning()
         viewModel.startScanning()
       }
     }
