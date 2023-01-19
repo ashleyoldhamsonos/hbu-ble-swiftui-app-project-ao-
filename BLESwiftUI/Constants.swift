@@ -28,6 +28,7 @@ struct Constants {
     static let getSpatialAudioMode = Data([0x00, 0x02, 0x12])
     static let spatialAudioModeOn = Data([0x00, 0x02, 0x13, 0x01])
     static let spatialAudioModeOff = Data([0x00, 0x02, 0x13, 0x00])
+    static let getBatteryInformation = Data([0x00, 0x00, 0x04])
   }
 
   struct PlaybackControlButton {

@@ -12,9 +12,10 @@ class PeripheralViewModel: ObservableObject {
   @Published var peripherals = [Peripheral]()
   var bleManager = BLEManager()
 
-  func addDeviceToArray(device: Peripheral) {
-    peripherals.append(device)
-  }
+//  func addDeviceToArray(device: Peripheral) {
+//    print("VM")
+//    peripherals.append(device)
+//  }
 
   func startScanning() {
     bleManager.startScanning()

@@ -210,6 +210,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
+//    myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
   }
 
   func parseGattCharacteristic(characteristic: CBCharacteristic) {
@@ -218,12 +219,14 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 //    print("DATA", data[3])
 
     switch data[2] {
-    case 9: //product name
+    case 9: // get product name
       self.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
-    case 14: //get anc mode: Bool
+    case 14: // get anc mode: Bool
       (data[3] == 0) ? (self.devices.getANCMode = "Off") : (self.devices.getANCMode = "On")
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (self.devices.getSpatialAudio = "Off") : (self.devices.getSpatialAudio = "On")
+//    case 4: // get battery information
+//      print("BAT", String(data: data[4...], encoding: .utf8) ?? "battery unknown")
     default:
       print("default")
     }
