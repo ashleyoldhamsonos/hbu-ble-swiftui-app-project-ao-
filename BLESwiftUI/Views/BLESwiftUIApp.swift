@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct BLESwiftUIApp: App {
   @ObservedObject var bleManager = BLEManager()
-  @ObservedObject var viewModel = PeripheralViewModel()
+  @ObservedObject var viewModel = PeripheralViewModel.shared
 
     var body: some Scene {
         WindowGroup {

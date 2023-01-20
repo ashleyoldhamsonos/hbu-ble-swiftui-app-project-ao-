@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct DeviceList: View {
-  @EnvironmentObject var bleManager: BLEManager
+//  @EnvironmentObject var bleManager: BLEManager
   @EnvironmentObject var viewModel: PeripheralViewModel
 
   var body: some View {
     VStack {
       List() {
-        ForEach(bleManager.peripherals) { peripheral in
+        ForEach(viewModel.peripherals) { peripheral in
           NavigationLink {
-            PeripheralDetail(peripheral: peripheral, device: bleManager.devices)
+            PeripheralDetail(peripheral: peripheral, device: viewModel.devices)
           } label: {
             HStack {
               Image(systemName: peripheral.icon)
@@ -35,9 +35,11 @@ struct DeviceList: View {
 }
 
 struct DeviceList_Previews: PreviewProvider {
-  static var bleManager = BLEManager()
+//  static var bleManager = BLEManager()
+  static let viewModel = PeripheralViewModel()
   static var previews: some View {
     DeviceList()
-      .environmentObject(bleManager)
+//      .environmentObject(bleManager)
+      .environmentObject(viewModel)
   }
 }

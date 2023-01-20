@@ -24,8 +24,10 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
   static let bleManager = BLEManager()
+  static let viewModel = PeripheralViewModel()
     static var previews: some View {
         ContentView()
         .environmentObject(bleManager)
+        .environmentObject(viewModel)
     }
 }

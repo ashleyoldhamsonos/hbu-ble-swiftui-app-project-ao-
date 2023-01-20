@@ -14,8 +14,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private var centralManager: CBCentralManager!
   private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
-  @Published var peripherals = [Peripheral]()
-  @Published var devices = DeviceModel()
+//  @Published var peripherals = [Peripheral]()
+//  @Published var devices = DeviceModel()
   private var characteristic: CBCharacteristic!
   private var outCharacteristic: CBCharacteristic!
   private var inCharacteristic: CBCharacteristic!
@@ -68,9 +68,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     }
 
 //    let advertisementData = advertisementData.description
-    let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue)
-    print(newPeripheral.name)
-    peripherals.append(newPeripheral)
+    let newPeripheral = Peripheral(id: PeripheralViewModel.shared.peripherals.count, name: peripheralName, rssi: RSSI.intValue)
+//    print(newPeripheral.name)
+//    peripherals.append(newPeripheral)
+    PeripheralViewModel.shared.addDeviceToArray(device: newPeripheral)
   }
 
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -150,7 +151,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   // MARK: Class functions
 
   func startScanning() {
-    peripherals = []
+    PeripheralViewModel.shared.peripherals = []
     centralManager.scanForPeripherals(withServices: [Constants.sonosService])
   }
 
@@ -220,11 +221,11 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
     switch data[2] {
     case 9: // get product name
-      self.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
+      PeripheralViewModel.shared.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
     case 14: // get anc mode: Bool
-      (data[3] == 0) ? (self.devices.getANCMode = "Off") : (self.devices.getANCMode = "On")
+      (data[3] == 0) ? (PeripheralViewModel.shared.devices.getANCMode = "Off") : (PeripheralViewModel.shared.devices.getANCMode = "On")
     case 18: // get spatial audio: Bool
-      (data[3] == 0) ? (self.devices.getSpatialAudio = "Off") : (self.devices.getSpatialAudio = "On")
+      (data[3] == 0) ? (PeripheralViewModel.shared.devices.getSpatialAudio = "Off") : (PeripheralViewModel.shared.devices.getSpatialAudio = "On")
 //    case 4: // get battery information
 //      print("BAT", String(data: data[4...], encoding: .utf8) ?? "battery unknown")
     default:

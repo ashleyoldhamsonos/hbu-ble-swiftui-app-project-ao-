@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PeripheralDetail: View {
-//  @EnvironmentObject var bleManager: BLEManager
+  //  @EnvironmentObject var bleManager: BLEManager
   @EnvironmentObject var viewModel: PeripheralViewModel
   var peripheral: Peripheral
   var device: DeviceModel
@@ -19,14 +19,19 @@ struct PeripheralDetail: View {
 
   var body: some View {
     Spacer()
-    Text("Product Name: \(peripheral.name)")
-    //      Text(peripheral.advertisingData)
-    if peripheral.name == Constants.gattServer {
-      Text("Device Name: \(device.name ?? "")")
-    } else {
-      Text("Device Name: Unknown")
+
+    VStack(spacing: 10) {
+      Text("Product Name: \(peripheral.name)")
+      //      Text(peripheral.advertisingData)
+      if peripheral.name == Constants.gattServer {
+        Text("Device Name: \(device.name ?? "")")
+      } else {
+        Text("Device Name: Unknown")
+      }
     }
+
     Spacer()
+
     VStack {
       Toggle(isOn: $spatialToggle, label: {
         Text("Spatial Audio")
@@ -34,6 +39,7 @@ struct PeripheralDetail: View {
         newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
       })
       .disabled(peripheral.name == Constants.gattServer ? false : true)
+
       Toggle(isOn: $ancToggle, label: {
         Text("ANC")
       }).onChange(of: ancToggle, perform: { newValue in
@@ -44,6 +50,7 @@ struct PeripheralDetail: View {
         }
       })
       .disabled(peripheral.name == Constants.gattServer ? false : true)
+
       HStack(spacing: 40) {
         Button {
           viewModel.skipToPreviousTrack()
@@ -53,6 +60,7 @@ struct PeripheralDetail: View {
             .frame(width: Constants.PlaybackControlButton.skipPreviousTrackWidth, height: Constants.PlaybackControlButton.skipPreviousTrackHeight)
             .foregroundColor(.white)
         }
+
         Button {
           if playToggle != true {
             viewModel.playCommand()
@@ -73,6 +81,7 @@ struct PeripheralDetail: View {
             .foregroundColor(.white)
         }
         .controlSize(.regular)
+
         Button {
           viewModel.skipToNextTrack()
         } label: {
@@ -86,14 +95,14 @@ struct PeripheralDetail: View {
     .navigationTitle(peripheral.name)
     .navigationBarTitleDisplayMode(.inline)
     .padding()
-
   }
-
 }
 
 struct PeripheralDetail_Previews: PreviewProvider {
-  static let bleManager = BLEManager()
+  //  static let bleManager = BLEManager()
+  static let viewModel = PeripheralViewModel()
   static var previews: some View {
-    PeripheralDetail(peripheral: bleManager.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel())
+    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel())
+      .environmentObject(viewModel)
   }
 }

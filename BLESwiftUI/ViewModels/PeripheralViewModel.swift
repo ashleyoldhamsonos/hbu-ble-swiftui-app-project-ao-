@@ -10,12 +10,15 @@ import Foundation
 class PeripheralViewModel: ObservableObject {
 
   @Published var peripherals = [Peripheral]()
+  @Published var devices = DeviceModel()
   var bleManager = BLEManager()
 
-//  func addDeviceToArray(device: Peripheral) {
-//    print("VM")
-//    peripherals.append(device)
-//  }
+  static let shared = PeripheralViewModel()
+
+  func addDeviceToArray(device: Peripheral) {
+    print(device.name)
+    peripherals.append(device)
+  }
 
   func startScanning() {
     bleManager.startScanning()

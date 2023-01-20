@@ -38,8 +38,10 @@ struct ScanControls: View {
 
 struct ScanControls_Previews: PreviewProvider {
   static var bleManager = BLEManager()
+  static let viewModel = PeripheralViewModel()
   static var previews: some View {
     ScanControls()
       .environmentObject(bleManager)
+      .environmentObject(viewModel)
   }
 }
