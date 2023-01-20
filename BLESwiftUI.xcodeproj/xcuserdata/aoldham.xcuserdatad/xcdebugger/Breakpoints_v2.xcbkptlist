@@ -164,5 +164,53 @@
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D5F8782D-C0A4-45EF-B9E9-08D9CE45C6A3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BLESwiftUI/Views/PeripheralDetail.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "PeripheralDetail"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "D5F8782D-C0A4-45EF-B9E9-08D9CE45C6A3 - e74d5eee8c8bf8fe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of BLESwiftUI.PeripheralDetail.spatialToggle : Swift.Bool"
+                  moduleName = "BLESwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aoldham/Documents/Development/BLESwiftUI/BLESwiftUI/Views/PeripheralDetail.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  uuid = "D5F8782D-C0A4-45EF-B9E9-08D9CE45C6A3 - 5e3710ce1e4ca93f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BLESwiftUI.PeripheralDetail.init(viewModel: SwiftUI.EnvironmentObject&lt;BLESwiftUI.PeripheralViewModel&gt;, peripheral: BLESwiftUI.Peripheral, device: BLESwiftUI.DeviceModel) -&gt; BLESwiftUI.PeripheralDetail"
+                  moduleName = "BLESwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aoldham/Documents/Development/BLESwiftUI/BLESwiftUI/Views/PeripheralDetail.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "172">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

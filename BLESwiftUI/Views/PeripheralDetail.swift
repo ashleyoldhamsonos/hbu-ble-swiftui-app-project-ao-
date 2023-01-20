@@ -20,13 +20,20 @@ struct PeripheralDetail: View {
   var body: some View {
     Spacer()
 
-    VStack(spacing: 10) {
-      Text("Product Name: \(peripheral.name)")
-      //      Text(peripheral.advertisingData)
-      if peripheral.name == Constants.gattServer {
-        Text("Device Name: \(device.name ?? "")")
-      } else {
-        Text("Device Name: Unknown")
+    HStack {
+      Image(systemName: peripheral.icon)
+        .resizable()
+        .scaledToFit()
+        .frame(width: 60, height: 60)
+      VStack(alignment: .leading, spacing: 10) {
+        Text("Product Name: \(peripheral.name)")
+        //      Text(peripheral.advertisingData)
+        if peripheral.name == Constants.gattServer {
+          Text("Device Name: \(device.name ?? "")")
+        } else {
+          Text("Device Name: Unknown")
+        }
+        Text("RSSI: \(peripheral.rssi)")
       }
     }
 
