@@ -37,6 +37,7 @@
 		1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanControls.swift; sourceTree = "<group>"; };
 		1F98FA6129561F1E00C07FE3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1FC7051C29706C0000EB191B /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
+		1FC70522297DD4E400EB191B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +70,7 @@
 		1F98FA302948AA4A00C07FE3 /* BLESwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				1FC70522297DD4E400EB191B /* Info.plist */,
 				1FC7051F2977052700EB191B /* Views */,
 				1FC7051E2977050100EB191B /* Models */,
 				1FC70520297705E100EB191B /* Services */,
@@ -338,6 +340,7 @@
 				DEVELOPMENT_TEAM = 2G4LW83Q3E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BLESwiftUI/Info.plist;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app uses Bluetooth for scanning peripheral devices.";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app uses Bluetooth for scanning peripheral devices.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -370,6 +373,7 @@
 				DEVELOPMENT_TEAM = 2G4LW83Q3E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BLESwiftUI/Info.plist;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app uses Bluetooth for scanning peripheral devices.";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app uses Bluetooth for scanning peripheral devices.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
