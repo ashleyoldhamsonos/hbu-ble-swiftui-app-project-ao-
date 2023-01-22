@@ -17,6 +17,9 @@ class PeripheralViewModel: ObservableObject {
 
   func addDeviceToArray(device: Peripheral) {
     print(device.name)
+    for item in peripherals {
+      if item.name == device.name { return }
+    }
     peripherals.append(device)
   }
 
