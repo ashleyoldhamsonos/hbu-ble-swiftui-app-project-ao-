@@ -8,23 +8,21 @@
 import SwiftUI
 
 struct PeripheralDetail: View {
-  //  @EnvironmentObject var bleManager: BLEManager
   @EnvironmentObject var viewModel: PeripheralViewModel
   var peripheral: Peripheral
   var device: DeviceModel
-  @State private var ancToggle = false
   @State private var playToggle = false
-  @State private var spatialToggle = false
-  @State private var enabledControls = false
+  @Binding var ancToggle: Bool
+  @Binding var spatialToggle: Bool
 
   var body: some View {
     Spacer()
 
-    HStack {
+    HStack(spacing: 10) {
       Image(systemName: peripheral.icon)
         .resizable()
         .scaledToFit()
-        .frame(width: 60, height: 60)
+        .frame(height: 60)
       VStack(alignment: .leading, spacing: 10) {
         Text("Product Name: \(peripheral.name)")
         //      Text(peripheral.advertisingData)
@@ -87,7 +85,6 @@ struct PeripheralDetail: View {
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
             .foregroundColor(.white)
         }
-        .controlSize(.regular)
 
         Button {
           viewModel.skipToNextTrack()
@@ -106,10 +103,9 @@ struct PeripheralDetail: View {
 }
 
 struct PeripheralDetail_Previews: PreviewProvider {
-  //  static let bleManager = BLEManager()
   static let viewModel = PeripheralViewModel()
   static var previews: some View {
-    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel())
+    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel(), ancToggle: .constant(true), spatialToggle: .constant(true))
       .environmentObject(viewModel)
   }
 }
