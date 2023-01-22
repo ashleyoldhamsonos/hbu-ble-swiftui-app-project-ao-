@@ -44,6 +44,7 @@ struct PeripheralDetail: View {
         newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
       })
       .disabled(peripheral.name == Constants.gattServer ? false : true)
+      .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
 
       Toggle(isOn: $ancToggle, label: {
         Text("ANC")
@@ -55,6 +56,7 @@ struct PeripheralDetail: View {
         }
       })
       .disabled(peripheral.name == Constants.gattServer ? false : true)
+      .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
 
       HStack(spacing: 40) {
         Button {
@@ -63,7 +65,7 @@ struct PeripheralDetail: View {
           Image(systemName: Constants.PlaybackControlButton.previousTrackImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.skipPreviousTrackWidth, height: Constants.PlaybackControlButton.skipPreviousTrackHeight)
-            .foregroundColor(.white)
+            .foregroundColor(Color(UIColor.white))
         }
 
         Button {
@@ -79,11 +81,11 @@ struct PeripheralDetail: View {
           Image(systemName: Constants.PlaybackControlButton.pauseImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-            .foregroundColor(.white) :
+            .foregroundColor(Color(uiColor: .white)) :
           Image(systemName: Constants.PlaybackControlButton.playImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-            .foregroundColor(.white)
+            .foregroundColor(Color(UIColor.white))
         }
 
         Button {
@@ -92,7 +94,7 @@ struct PeripheralDetail: View {
           Image(systemName: Constants.PlaybackControlButton.nextTrackImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.skipNextTrackWidth, height: Constants.PlaybackControlButton.skipNextTrackHeight)
-            .foregroundColor(.white)
+            .foregroundColor(Color(UIColor.white))
         }
       }
     }
