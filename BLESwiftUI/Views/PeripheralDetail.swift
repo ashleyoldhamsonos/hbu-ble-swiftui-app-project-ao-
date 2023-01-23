@@ -11,7 +11,6 @@ struct PeripheralDetail: View {
   @EnvironmentObject var viewModel: PeripheralViewModel
   var peripheral: Peripheral
   var device: DeviceModel
-  @State private var playToggle = false
   @Binding var ancToggle: Bool
   @Binding var spatialToggle: Bool
 
@@ -58,45 +57,8 @@ struct PeripheralDetail: View {
       .disabled(peripheral.name == Constants.gattServer ? false : true)
       .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
 
-      HStack(spacing: 40) {
-        Button {
-          viewModel.skipToPreviousTrack()
-        } label: {
-          Image(systemName: Constants.PlaybackControlButton.previousTrackImage)
-            .resizable()
-            .frame(width: Constants.PlaybackControlButton.skipPreviousTrackWidth, height: Constants.PlaybackControlButton.skipPreviousTrackHeight)
-            .foregroundColor(Constants.CustomColor.buttonControl)
-        }
+      PeripheralAudioControls()
 
-        Button {
-          if playToggle != true {
-            viewModel.playCommand()
-            playToggle = true
-          } else {
-            viewModel.pauseCommand()
-            playToggle = false
-          }
-        } label: {
-          playToggle ?
-          Image(systemName: Constants.PlaybackControlButton.pauseImage)
-            .resizable()
-            .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-            .foregroundColor(Constants.CustomColor.buttonControl) :
-          Image(systemName: Constants.PlaybackControlButton.playImage)
-            .resizable()
-            .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-            .foregroundColor(Constants.CustomColor.buttonControl)
-        }
-
-        Button {
-          viewModel.skipToNextTrack()
-        } label: {
-          Image(systemName: Constants.PlaybackControlButton.nextTrackImage)
-            .resizable()
-            .frame(width: Constants.PlaybackControlButton.skipNextTrackWidth, height: Constants.PlaybackControlButton.skipNextTrackHeight)
-            .foregroundColor(Constants.CustomColor.buttonControl)
-        }
-      }
     }
     .navigationTitle(peripheral.name)
     .navigationBarTitleDisplayMode(.inline)

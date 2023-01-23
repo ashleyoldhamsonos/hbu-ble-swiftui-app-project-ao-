@@ -20,6 +20,7 @@
 		1F98FA6029549F0E00C07FE3 /* ScanControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */; };
 		1F98FA6229561F1E00C07FE3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA6129561F1E00C07FE3 /* Constants.swift */; };
 		1FC7051D29706C0000EB191B /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC7051C29706C0000EB191B /* DeviceModel.swift */; };
+		1FC70524297EA4B500EB191B /* PeripheralAudioControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC70523297EA4B500EB191B /* PeripheralAudioControls.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		1F98FA6129561F1E00C07FE3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1FC7051C29706C0000EB191B /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		1FC70522297DD4E400EB191B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1FC70523297EA4B500EB191B /* PeripheralAudioControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAudioControls.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				1F98FA332948AA4A00C07FE3 /* ContentView.swift */,
 				1F98FA3F2948AC3B00C07FE3 /* DeviceList.swift */,
 				1F98FA4B2949FED500C07FE3 /* PeripheralDetail.swift */,
+				1FC70523297EA4B500EB191B /* PeripheralAudioControls.swift */,
 				1F98FA5F29549F0E00C07FE3 /* ScanControls.swift */,
 				1F98FA472949D24600C07FE3 /* CustomButton.swift */,
 			);
@@ -200,6 +203,7 @@
 			files = (
 				1F98FA442948DE4800C07FE3 /* Peripheral.swift in Sources */,
 				1F98FA402948AC3B00C07FE3 /* DeviceList.swift in Sources */,
+				1FC70524297EA4B500EB191B /* PeripheralAudioControls.swift in Sources */,
 				1F98FA6029549F0E00C07FE3 /* ScanControls.swift in Sources */,
 				1F98FA482949D24600C07FE3 /* CustomButton.swift in Sources */,
 				1F98FA422948B50A00C07FE3 /* BLEManager.swift in Sources */,
