@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreBluetooth
+import SwiftUI
 
 struct Constants {
   static let sonosService = CBUUID(string: "FE07")
@@ -42,6 +43,10 @@ struct Constants {
     static let skipNextTrackHeight: CGFloat = 20
     static let skipPreviousTrackWidth: CGFloat = 20
     static let skipPreviousTrackHeight: CGFloat = 20
+  }
+
+  struct CustomColor {
+    static let buttonControl = Color("ButtonControls")
   }
 
 }

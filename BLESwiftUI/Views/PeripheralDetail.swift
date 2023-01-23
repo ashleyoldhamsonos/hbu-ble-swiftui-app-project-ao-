@@ -65,7 +65,7 @@ struct PeripheralDetail: View {
           Image(systemName: Constants.PlaybackControlButton.previousTrackImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.skipPreviousTrackWidth, height: Constants.PlaybackControlButton.skipPreviousTrackHeight)
-            .foregroundColor(Color(UIColor.white))
+            .foregroundColor(Constants.CustomColor.buttonControl)
         }
 
         Button {
@@ -81,11 +81,11 @@ struct PeripheralDetail: View {
           Image(systemName: Constants.PlaybackControlButton.pauseImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-            .foregroundColor(Color(uiColor: .white)) :
+            .foregroundColor(Constants.CustomColor.buttonControl) :
           Image(systemName: Constants.PlaybackControlButton.playImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-            .foregroundColor(Color(UIColor.white))
+            .foregroundColor(Constants.CustomColor.buttonControl)
         }
 
         Button {
@@ -94,7 +94,7 @@ struct PeripheralDetail: View {
           Image(systemName: Constants.PlaybackControlButton.nextTrackImage)
             .resizable()
             .frame(width: Constants.PlaybackControlButton.skipNextTrackWidth, height: Constants.PlaybackControlButton.skipNextTrackHeight)
-            .foregroundColor(Color(UIColor.white))
+            .foregroundColor(Constants.CustomColor.buttonControl)
         }
       }
     }
