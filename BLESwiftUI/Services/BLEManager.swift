@@ -207,14 +207,14 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
-  func getGattSettings(characteristic: CBCharacteristic) {
+   private func getGattSettings(characteristic: CBCharacteristic) {
     myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
 //    myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
   }
 
-  func parseGattCharacteristic(characteristic: CBCharacteristic) {
+   private func parseGattCharacteristic(characteristic: CBCharacteristic) {
     guard let data = characteristic.value else { return }
 
 //    print("DATA", data[3])

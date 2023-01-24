@@ -17,11 +17,11 @@ struct PeripheralDetail: View {
   var body: some View {
     Spacer()
 
-    HStack(spacing: 10) {
+    VStack(spacing: 25) {
       Image(systemName: peripheral.icon)
         .resizable()
         .scaledToFit()
-        .frame(height: 60)
+        .frame(height: 80)
       VStack(alignment: .leading, spacing: 10) {
         Text("Product Name: \(peripheral.name)")
         //      Text(peripheral.advertisingData)
