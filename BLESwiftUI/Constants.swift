@@ -46,7 +46,8 @@ struct Constants {
   }
 
   struct CustomColor {
-    static let buttonControl = Color("ButtonControls")
+    static let buttonControlColor = Color("ButtonControlColor")
+    static let toggleControlColor = Color("ToggleControlColor")
   }
 
 }

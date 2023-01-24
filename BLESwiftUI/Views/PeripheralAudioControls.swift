@@ -19,7 +19,7 @@ struct PeripheralAudioControls: View {
         Image(systemName: Constants.PlaybackControlButton.previousTrackImage)
           .resizable()
           .frame(width: Constants.PlaybackControlButton.skipPreviousTrackWidth, height: Constants.PlaybackControlButton.skipPreviousTrackHeight)
-          .foregroundColor(Constants.CustomColor.buttonControl)
+          .foregroundColor(Constants.CustomColor.buttonControlColor)
       }
 
       Button {
@@ -35,11 +35,11 @@ struct PeripheralAudioControls: View {
         Image(systemName: Constants.PlaybackControlButton.pauseImage)
           .resizable()
           .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-          .foregroundColor(Constants.CustomColor.buttonControl) :
+          .foregroundColor(Constants.CustomColor.buttonControlColor) :
         Image(systemName: Constants.PlaybackControlButton.playImage)
           .resizable()
           .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
-          .foregroundColor(Constants.CustomColor.buttonControl)
+          .foregroundColor(Constants.CustomColor.buttonControlColor)
       }
 
       Button {
@@ -48,7 +48,7 @@ struct PeripheralAudioControls: View {
         Image(systemName: Constants.PlaybackControlButton.nextTrackImage)
           .resizable()
           .frame(width: Constants.PlaybackControlButton.skipNextTrackWidth, height: Constants.PlaybackControlButton.skipNextTrackHeight)
-          .foregroundColor(Constants.CustomColor.buttonControl)
+          .foregroundColor(Constants.CustomColor.buttonControlColor)
       }
     }
   }
