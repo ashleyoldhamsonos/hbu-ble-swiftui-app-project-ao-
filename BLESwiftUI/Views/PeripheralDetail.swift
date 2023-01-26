@@ -17,22 +17,30 @@ struct PeripheralDetail: View {
   var body: some View {
     Spacer()
 
-    VStack(spacing: 25) {
-      Image(systemName: peripheral.icon)
-        .resizable()
-        .scaledToFit()
-        .frame(height: 80)
-      VStack(alignment: .leading, spacing: 10) {
-        Text("Product Name: \(peripheral.name)")
-        //      Text(peripheral.advertisingData)
-        if peripheral.name == Constants.gattServer {
-          Text("Device Name: \(device.name ?? "")")
-        } else {
-          Text("Device Name: Unknown")
+    ZStack {
+      Rectangle()
+        .fill(Color.init(.systemGray5))
+        .cornerRadius(12.0)
+        .frame(height: 225)
+      VStack(spacing: 25) {
+        Image(systemName: peripheral.icon)
+          .resizable()
+          .scaledToFit()
+          .frame(height: 80)
+        VStack(alignment: .leading, spacing: 10) {
+          Text("Product Name: \(peripheral.name)")
+          //      Text(peripheral.advertisingData)
+          if peripheral.name == Constants.gattServer {
+            Text("Device Name: \(device.name ?? "")")
+          } else {
+            Text("Device Name: Unknown")
+          }
+          Text("RSSI: \(peripheral.rssi)")
         }
-        Text("RSSI: \(peripheral.rssi)")
       }
     }
+    .padding(.horizontal)
+
 
     Spacer()
 
@@ -59,10 +67,16 @@ struct PeripheralDetail: View {
       .disabled(peripheral.name == Constants.gattServer ? false : true)
       .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
 
-      PeripheralAudioControls()
+      ZStack {
+        Rectangle()
+          .fill(Color.init(.systemGray5))
+          .cornerRadius(12.0)
+          .frame(height: 100)
+        PeripheralAudioControls()
+      }
 
     }
-    .navigationTitle(peripheral.name)
+//    .navigationTitle(peripheral.name)
     .navigationBarTitleDisplayMode(.inline)
     .padding()
   }

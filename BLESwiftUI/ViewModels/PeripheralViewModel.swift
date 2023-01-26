@@ -5,7 +5,7 @@
 //  Created by Ashley Oldham on 19/12/2022.
 //
 
-import Foundation
+import UIKit
 
 class PeripheralViewModel: ObservableObject {
 
