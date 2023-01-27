@@ -15,15 +15,35 @@ struct DeviceList: View {
   var body: some View {
     VStack {
       List() {
-        ForEach(viewModel.peripherals) { peripheral in
-          NavigationLink {
-            PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
-          } label: {
-            HStack {
-              Image(systemName: peripheral.icon)
-              Text(peripheral.name)
-              Spacer()
-              Text(String(peripheral.rssi))
+        Section("Players") {
+          ForEach(viewModel.peripherals) { peripheral in
+            if peripheral.name != Constants.gattServer {
+              NavigationLink {
+                PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
+              } label: {
+                HStack {
+                  Image(systemName: peripheral.icon)
+                  Text(peripheral.name)
+                  Spacer()
+                  Text(String(peripheral.rssi))
+                }
+              }
+            }
+          }
+        }
+        Section("Wearables") {
+          ForEach(viewModel.peripherals) { peripheral in
+            if peripheral.name == Constants.gattServer {
+              NavigationLink {
+                PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
+              } label: {
+                HStack {
+                  Image(systemName: peripheral.icon)
+                  Text(peripheral.name)
+                  Spacer()
+                  Text(String(peripheral.rssi))
+                }
+              }
             }
           }
         }
