@@ -21,12 +21,7 @@ struct DeviceList: View {
               NavigationLink {
                 PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
               } label: {
-                HStack {
-                  Image(systemName: peripheral.icon)
-                  Text(peripheral.name)
-                  Spacer()
-                  Text(String(peripheral.rssi))
-                }
+                DeviceListRow(peripheral: peripheral)
               }
             }
           }
@@ -37,12 +32,7 @@ struct DeviceList: View {
               NavigationLink {
                 PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
               } label: {
-                HStack {
-                  Image(systemName: peripheral.icon)
-                  Text(peripheral.name)
-                  Spacer()
-                  Text(String(peripheral.rssi))
-                }
+                DeviceListRow(peripheral: peripheral)
               }
             }
           }
