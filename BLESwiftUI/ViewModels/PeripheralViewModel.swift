@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import SwiftUI
 
 class PeripheralViewModel: ObservableObject {
 
   @Published var peripherals = [Peripheral]()
-  @Published var devices = DeviceModel()
+  @Published var devices = DeviceModel(volumeLevel: 10)
   var bleManager = BLEManager()
 
   static let shared = PeripheralViewModel()
@@ -61,6 +62,15 @@ class PeripheralViewModel: ObservableObject {
 
   func skipToNextTrack() {
     bleManager.skipToNextTrack()
+  }
+
+  func setVolumeLevel() {
+    bleManager.setVolumeLevel()
+  }
+
+  func hapticFeedback() {
+    let haptic = UINotificationFeedbackGenerator()
+    haptic.notificationOccurred(.success)
   }
   
 }

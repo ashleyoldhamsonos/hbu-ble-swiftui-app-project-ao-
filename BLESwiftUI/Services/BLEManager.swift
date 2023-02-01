@@ -207,10 +207,17 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
+  func setVolumeLevel() {
+    print("volume change")
+    guard let characteristic = self.inCharacteristic else { return }
+    myPeripheral.writeValue(Constants.DukeCommand.setVolumeLevel, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
    private func getGattSettings(characteristic: CBCharacteristic) {
     myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.getVolumeLevel, for: inCharacteristic, type: .withoutResponse)
 //    myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
   }
 
@@ -226,6 +233,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       (data[3] == 0) ? (PeripheralViewModel.shared.devices.getANCMode = "Off") : (PeripheralViewModel.shared.devices.getANCMode = "On")
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (PeripheralViewModel.shared.devices.getSpatialAudio = "Off") : (PeripheralViewModel.shared.devices.getSpatialAudio = "On")
+//    case 3: // set volume level
+//      PeripheralViewModel.shared.devices.volumeLevel = Float(truncating: data[3] as NSNumber)
+//      print("BLE", data[3])
 //    case 4: // get battery information
 //      print("BAT", String(data: data[4...], encoding: .utf8) ?? "battery unknown")
     default:

@@ -71,8 +71,8 @@ struct PeripheralDetail: View {
         Rectangle()
           .fill(Color.init(.systemGray5))
           .cornerRadius(12.0)
-          .frame(height: 100)
-        PeripheralAudioControls()
+          .frame(height: 120)
+        PeripheralAudioControls(volumeLevel: viewModel.devices.volumeLevel)
       }
 
     }
@@ -85,7 +85,7 @@ struct PeripheralDetail: View {
 struct PeripheralDetail_Previews: PreviewProvider {
   static let viewModel = PeripheralViewModel()
   static var previews: some View {
-    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel(), ancToggle: .constant(true), spatialToggle: .constant(true))
+    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel(volumeLevel: 10), ancToggle: .constant(true), spatialToggle: .constant(true))
       .environmentObject(viewModel)
   }
 }

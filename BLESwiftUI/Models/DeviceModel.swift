@@ -11,4 +11,5 @@ struct DeviceModel {
   var name: String?
   var getANCMode: String?
   var getSpatialAudio: String?
+  var volumeLevel: Float
 }
