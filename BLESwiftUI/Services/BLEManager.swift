@@ -131,12 +131,20 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   /// decodes data once triggered with change of OUTCharacterisitc
   func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    guard let data = characteristic.value else { return }
 
     if error != nil {
       print("Error reading characteristic value", error!)
     }
     if characteristic.uuid == Constants.sonosOUTCharacteristic {
-      parseGattCharacteristic(characteristic: characteristic)
+      switch data[0] {
+      case 2:
+        responseMuseFeatureID(characteristic: characteristic)
+      case 8:
+        parseGattError(characteristic: characteristic)
+      default:
+        print("Muse Event received")
+      }
     }
   }
 
@@ -218,14 +226,49 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getVolumeLevel, for: inCharacteristic, type: .withoutResponse)
-//    myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
   }
 
-   private func parseGattCharacteristic(characteristic: CBCharacteristic) {
+  private func responseMuseFeatureID(characteristic: CBCharacteristic) {
     guard let data = characteristic.value else { return }
 
-//    print("DATA", data[3])
+    /// switching on the Muse Feature ID
+    switch data[1] {
+    case 0: // auxHeadphonesStatus
+      parseBatteryStatus(characteristic: characteristic)
+    case 1: // auxHeadphonesManagement
+      print("deal with headphones management")
+    case 2: // auxHeadphonesSettings
+      parseHeadphoneSettings(characteristic: characteristic)
+    case 3: // auxHeadphonesVolume
+      parseHeadphoneVolume(characteristic: characteristic)
+    case 4: // auxHeadphonesPlayback
+      print("deal with headphones playback")
+    case 5: // auxHeadphonesPlaybackMetadata
+      print("deal with playback metadata")
+    case 6: // auxHeadphonesSoundSwap
+      print("deal with sound swap")
+    default:
+      print("")
+    }
+  }
 
+  /// getting battery information. I don't quite understand how to convert accurate information here.
+  private func parseBatteryStatus(characteristic: CBCharacteristic) {
+    guard let data = characteristic.value else { return }
+
+    switch data[2] {
+    case 4: // get battery information
+      print("Battery", String(data: data[3...], encoding: .utf8) ?? "battery unknown")
+    default:
+      print("battery default")
+    }
+  }
+
+  private func parseHeadphoneSettings(characteristic: CBCharacteristic) {
+    guard let data = characteristic.value else { return }
+
+    /// PDU specific ID is found on third section of response. Returned as Decimal
     switch data[2] {
     case 9: // get product name
       PeripheralViewModel.shared.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
@@ -233,13 +276,45 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       (data[3] == 0) ? (PeripheralViewModel.shared.devices.getANCMode = "Off") : (PeripheralViewModel.shared.devices.getANCMode = "On")
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (PeripheralViewModel.shared.devices.getSpatialAudio = "Off") : (PeripheralViewModel.shared.devices.getSpatialAudio = "On")
-//    case 3: // set volume level
-//      PeripheralViewModel.shared.devices.volumeLevel = Float(truncating: data[3] as NSNumber)
-//      print("BLE", data[3])
-//    case 4: // get battery information
-//      print("BAT", String(data: data[4...], encoding: .utf8) ?? "battery unknown")
     default:
-      print("default")
+      print("otherHeadphoneSetting", data[2])
+    }
+  }
+
+   private func parseHeadphoneVolume(characteristic: CBCharacteristic) {
+    guard let data = characteristic.value else { return }
+
+//    print("DATA", data[3])
+
+    /// PDU specific ID is found on third section of response. Returned as Decimal
+    switch data[2] {
+    case 3: // get volume level
+      PeripheralViewModel.shared.devices.volumeLevel = Float(truncating: data[3] as NSNumber)
+      print("volume", data[3])
+    default:
+      print("otherHeadphoneVolume", data[2])
+    }
+  }
+
+  private func parseGattError(characteristic: CBCharacteristic) {
+    guard let data = characteristic.value else { return }
+
+    ///payload returns discription of error
+    switch data[3] {
+    case 1:
+      print("Failed namespace not supported")
+    case 2:
+      print("Failed command not supported")
+    case 3:
+      print("Failed insufficient resources")
+    case 4:
+      print("Invalid parameter")
+    case 5:
+      print("Incorrect state")
+    case 6:
+      print("Invalid header")
+    default:
+      print("Invalid length")
     }
   }
 }

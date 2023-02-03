@@ -158,9 +158,9 @@
             filePath = "BLESwiftUI/Services/BLEManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "parseGattCharacteristic(characteristic:)"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "parseHeadphoneVolume(characteristic:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
