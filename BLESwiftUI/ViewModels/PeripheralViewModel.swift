@@ -11,61 +11,60 @@ import SwiftUI
 class PeripheralViewModel: ObservableObject {
 
   @Published var peripherals = [Peripheral]()
-  @Published var devices = DeviceModel(volumeLevel: 10)
-  var bleManager = BLEManager()
+  var devices = DeviceModel(volumeLevel: 10)
 
-  static let shared = PeripheralViewModel()
+  init() {
+    NotificationCenter.default.addObserver(self, selector: #selector(didGetPeripheralData(_:)), name: Notification.Name.DidSendData, object: nil)
+  }
 
-  func addDeviceToArray(device: Peripheral) {
-    print(device.name)
-    for item in peripherals {
-      if item.name == device.name { return }
-    }
-    peripherals.append(device)
+  @objc func didGetPeripheralData(_ notification: Notification) {
+    guard let newPeripheralData = notification.userInfo?["newPeripheral"] as? Peripheral else { return }
+
+    peripherals.append(newPeripheralData)
   }
 
   func startScanning() {
-    bleManager.startScanning()
+    BLEManager.shared.startScanning()
   }
 
   func stopScanning() {
-    bleManager.stopScanning()
+    BLEManager.shared.stopScanning()
   }
 
   func ancOn() {
-    bleManager.ancOn()
+    BLEManager.shared.ancOn()
   }
 
   func ancOff() {
-    bleManager.ancOff()
+    BLEManager.shared.ancOff()
   }
 
   func spatialAudioOn() {
-    bleManager.spatialAudioOn()
+    BLEManager.shared.spatialAudioOn()
   }
 
   func spatialAudioOff() {
-    bleManager.spatialAudioOff()
+    BLEManager.shared.spatialAudioOff()
   }
 
   func playCommand() {
-    bleManager.playCommand()
+    BLEManager.shared.playCommand()
   }
 
   func pauseCommand() {
-    bleManager.pauseCommand()
+    BLEManager.shared.pauseCommand()
   }
 
   func skipToPreviousTrack() {
-    bleManager.skipToPreviousTrack()
+    BLEManager.shared.skipToPreviousTrack()
   }
 
   func skipToNextTrack() {
-    bleManager.skipToNextTrack()
+    BLEManager.shared.skipToNextTrack()
   }
 
   func setVolumeLevel() {
-    bleManager.setVolumeLevel()
+    BLEManager.shared.setVolumeLevel()
   }
 
   func hapticFeedback() {

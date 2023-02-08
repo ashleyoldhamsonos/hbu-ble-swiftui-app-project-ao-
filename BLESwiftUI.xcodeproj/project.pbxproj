@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F8ED2D929840B4300B61277 /* DeviceListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8ED2D829840B4300B61277 /* DeviceListRow.swift */; };
+		1F8ED2DF2993DDEC00B61277 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8ED2DE2993DDEC00B61277 /* Extensions.swift */; };
 		1F98FA322948AA4A00C07FE3 /* BLESwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA312948AA4A00C07FE3 /* BLESwiftUIApp.swift */; };
 		1F98FA342948AA4A00C07FE3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA332948AA4A00C07FE3 /* ContentView.swift */; };
 		1F98FA362948AA4C00C07FE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F98FA352948AA4C00C07FE3 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		1F8ED2D829840B4300B61277 /* DeviceListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListRow.swift; sourceTree = "<group>"; };
+		1F8ED2DE2993DDEC00B61277 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1F98FA2E2948AA4A00C07FE3 /* BLESwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLESwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F98FA312948AA4A00C07FE3 /* BLESwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLESwiftUIApp.swift; sourceTree = "<group>"; };
 		1F98FA332948AA4A00C07FE3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				1FC70520297705E100EB191B /* Services */,
 				1FC705212977061B00EB191B /* ViewModels */,
 				1F98FA6129561F1E00C07FE3 /* Constants.swift */,
+				1F8ED2DE2993DDEC00B61277 /* Extensions.swift */,
 				1F98FA352948AA4C00C07FE3 /* Assets.xcassets */,
 				1F98FA372948AA4C00C07FE3 /* Preview Content */,
 			);
@@ -217,6 +220,7 @@
 				1FC7051D29706C0000EB191B /* DeviceModel.swift in Sources */,
 				1F98FA342948AA4A00C07FE3 /* ContentView.swift in Sources */,
 				1F98FA322948AA4A00C07FE3 /* BLESwiftUIApp.swift in Sources */,
+				1F8ED2DF2993DDEC00B61277 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

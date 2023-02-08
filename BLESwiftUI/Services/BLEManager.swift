@@ -14,11 +14,15 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private var centralManager: CBCentralManager!
   private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
-//  @Published var peripherals = [Peripheral]()
-//  @Published var devices = DeviceModel()
+  @Published var peripherals = [Peripheral]()
+  @Published var devices = DeviceModel(volumeLevel: 10)
   private var characteristic: CBCharacteristic!
   private var outCharacteristic: CBCharacteristic!
   private var inCharacteristic: CBCharacteristic!
+  private var peripheralName: String!
+  private var rssi: Int!
+
+  static let shared = BLEManager()
 
   override init() {
     super .init()
@@ -52,10 +56,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-    var peripheralName: String!
 
     if let name = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
       peripheralName = name
+      rssi = RSSI.intValue
     } else {
       peripheralName = "Unknown"
     }
@@ -68,10 +72,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     }
 
 //    let advertisementData = advertisementData.description
-    let newPeripheral = Peripheral(id: PeripheralViewModel.shared.peripherals.count, name: peripheralName, rssi: RSSI.intValue)
-//    print(newPeripheral.name)
-//    peripherals.append(newPeripheral)
-    PeripheralViewModel.shared.addDeviceToArray(device: newPeripheral)
+    let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue)
+    print(newPeripheral.name)
+    peripherals.append(newPeripheral)
+    sendData()
   }
 
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -159,7 +163,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   // MARK: Class functions
 
   func startScanning() {
-    PeripheralViewModel.shared.peripherals = []
+    peripherals = []
     centralManager.scanForPeripherals(withServices: [Constants.sonosService])
   }
 
@@ -271,11 +275,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     /// PDU specific ID is found on third section of response. Returned as Decimal
     switch data[2] {
     case 9: // get product name
-      PeripheralViewModel.shared.devices.name = String(data: data[4...], encoding: .utf8) ?? "unknown"
+      if let deviceName = String(data: data[4...], encoding: .utf8) {
+        devices.name = deviceName
+      }
     case 14: // get anc mode: Bool
-      (data[3] == 0) ? (PeripheralViewModel.shared.devices.getANCMode = "Off") : (PeripheralViewModel.shared.devices.getANCMode = "On")
+      (data[3] == 0) ? (devices.getANCMode = "Off") : (devices.getANCMode = "On")
     case 18: // get spatial audio: Bool
-      (data[3] == 0) ? (PeripheralViewModel.shared.devices.getSpatialAudio = "Off") : (PeripheralViewModel.shared.devices.getSpatialAudio = "On")
+      (data[3] == 0) ? (devices.getSpatialAudio = "Off") : (devices.getSpatialAudio = "On")
     default:
       print("otherHeadphoneSetting", data[2])
     }
@@ -289,7 +295,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     /// PDU specific ID is found on third section of response. Returned as Decimal
     switch data[2] {
     case 3: // get volume level
-      PeripheralViewModel.shared.devices.volumeLevel = Float(truncating: data[3] as NSNumber)
+      devices.volumeLevel = Float(truncating: data[3] as NSNumber)
       print("volume", data[3])
     default:
       print("otherHeadphoneVolume", data[2])
@@ -316,5 +322,11 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     default:
       print("Invalid length")
     }
+  }
+
+  func sendData() {
+    let data = Peripheral(id: peripherals.count, name: peripheralName, rssi: rssi)
+    let newData = ["newPeripheral": data]
+    NotificationCenter.default.post(name: .DidSendData, object: nil, userInfo: newData)
   }
 }

@@ -9,13 +9,11 @@ import SwiftUI
 
 @main
 struct BLESwiftUIApp: App {
-  @ObservedObject var bleManager = BLEManager()
-  @ObservedObject var viewModel = PeripheralViewModel.shared
+  @ObservedObject var viewModel = PeripheralViewModel()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-            .environmentObject(bleManager)
             .environmentObject(viewModel)
         }
     }

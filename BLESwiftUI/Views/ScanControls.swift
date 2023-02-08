@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct ScanControls: View {
-  @EnvironmentObject var bleManager: BLEManager
   @EnvironmentObject var viewModel: PeripheralViewModel
 
   var body: some View {
     VStack {
       Text("STATUS")
         .font(.headline)
-      if bleManager.isBluetoothOn {
+      if BLEManager.shared.isBluetoothOn {
         Text("Bluetooth is swithced on")
           .foregroundColor(.green)
       } else {
@@ -37,11 +36,9 @@ struct ScanControls: View {
 }
 
 struct ScanControls_Previews: PreviewProvider {
-  static var bleManager = BLEManager()
   static let viewModel = PeripheralViewModel()
   static var previews: some View {
     ScanControls()
-      .environmentObject(bleManager)
       .environmentObject(viewModel)
   }
 }

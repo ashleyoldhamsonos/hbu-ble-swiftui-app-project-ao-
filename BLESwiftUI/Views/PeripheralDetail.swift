@@ -72,7 +72,7 @@ struct PeripheralDetail: View {
           .fill(Color.init(.systemGray5))
           .cornerRadius(12.0)
           .frame(height: 120)
-        PeripheralAudioControls(volumeLevel: viewModel.devices.volumeLevel)
+        PeripheralAudioControls(volumeLevel: device.volumeLevel)
       }
 
     }
