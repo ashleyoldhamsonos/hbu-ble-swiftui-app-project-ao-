@@ -75,7 +75,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue)
     print(newPeripheral.name)
     peripherals.append(newPeripheral)
-    sendData()
+    sendPeripheralData()
   }
 
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -277,6 +277,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     case 9: // get product name
       if let deviceName = String(data: data[4...], encoding: .utf8) {
         devices.name = deviceName
+        updateDeviceModel()
       }
     case 14: // get anc mode: Bool
       (data[3] == 0) ? (devices.getANCMode = "Off") : (devices.getANCMode = "On")
@@ -324,9 +325,15 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     }
   }
 
-  func sendData() {
+  func sendPeripheralData() {
     let data = Peripheral(id: peripherals.count, name: peripheralName, rssi: rssi)
     let newData = ["newPeripheral": data]
-    NotificationCenter.default.post(name: .DidSendData, object: nil, userInfo: newData)
+    NotificationCenter.default.post(name: .DidSendPeripheralData, object: nil, userInfo: newData)
+  }
+
+  func updateDeviceModel() {
+    let data = DeviceModel(name: devices.name, volumeLevel: devices.volumeLevel)
+    let newData = ["updatedDeviceModel": data]
+    NotificationCenter.default.post(name: .DidUpdateDeviceModel, object: nil, userInfo: newData)
   }
 }

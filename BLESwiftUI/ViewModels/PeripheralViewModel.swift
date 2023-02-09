@@ -14,13 +14,20 @@ class PeripheralViewModel: ObservableObject {
   var devices = DeviceModel(volumeLevel: 10)
 
   init() {
-    NotificationCenter.default.addObserver(self, selector: #selector(didGetPeripheralData(_:)), name: Notification.Name.DidSendData, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didGetPeripheralData(_:)), name: Notification.Name.DidSendPeripheralData, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didUpdateDeviceModel(_:)), name: Notification.Name.DidUpdateDeviceModel, object: nil)
   }
 
   @objc func didGetPeripheralData(_ notification: Notification) {
     guard let newPeripheralData = notification.userInfo?["newPeripheral"] as? Peripheral else { return }
 
     peripherals.append(newPeripheralData)
+  }
+
+  @objc func didUpdateDeviceModel(_ notification: Notification) {
+    guard let newModelData = notification.userInfo?["updatedDeviceModel"] as? DeviceModel else { return }
+
+    devices = newModelData
   }
 
   func startScanning() {

@@ -10,7 +10,6 @@ import SwiftUI
 struct PeripheralDetail: View {
   @EnvironmentObject var viewModel: PeripheralViewModel
   var peripheral: Peripheral
-  var device: DeviceModel
   @Binding var ancToggle: Bool
   @Binding var spatialToggle: Bool
 
@@ -31,7 +30,7 @@ struct PeripheralDetail: View {
           Text("Product Name: \(peripheral.name)")
           //      Text(peripheral.advertisingData)
           if peripheral.name == Constants.gattServer {
-            Text("Device Name: \(device.name ?? "")")
+            Text("Device Name: \(viewModel.devices.name ?? "")")
           } else {
             Text("Device Name: Unknown")
           }
@@ -72,7 +71,7 @@ struct PeripheralDetail: View {
           .fill(Color.init(.systemGray5))
           .cornerRadius(12.0)
           .frame(height: 120)
-        PeripheralAudioControls(volumeLevel: device.volumeLevel)
+        PeripheralAudioControls(volumeLevel: viewModel.devices.volumeLevel)
       }
 
     }
@@ -85,7 +84,7 @@ struct PeripheralDetail: View {
 struct PeripheralDetail_Previews: PreviewProvider {
   static let viewModel = PeripheralViewModel()
   static var previews: some View {
-    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), device: DeviceModel(volumeLevel: 10), ancToggle: .constant(true), spatialToggle: .constant(true))
+    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), ancToggle: .constant(true), spatialToggle: .constant(true))
       .environmentObject(viewModel)
   }
 }

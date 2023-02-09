@@ -19,7 +19,7 @@ struct DeviceList: View {
           ForEach(viewModel.peripherals) { peripheral in
             if peripheral.name != Constants.gattServer {
               NavigationLink {
-                PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
+                PeripheralDetail(peripheral: peripheral, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
               } label: {
                 DeviceListRow(peripheral: peripheral)
               }
@@ -30,7 +30,7 @@ struct DeviceList: View {
           ForEach(viewModel.peripherals) { peripheral in
             if peripheral.name == Constants.gattServer {
               NavigationLink {
-                PeripheralDetail(peripheral: peripheral, device: viewModel.devices, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
+                PeripheralDetail(peripheral: peripheral, ancToggle: $ancToggle, spatialToggle: $spatialToggle)
               } label: {
                 DeviceListRow(peripheral: peripheral)
               }

@@ -8,5 +8,6 @@
 import Foundation
 
 extension Notification.Name {
-  static let DidSendData = Notification.Name("DidSendData")
+  static let DidSendPeripheralData = Notification.Name("DidSendPeripheralData")
+  static let DidUpdateDeviceModel = Notification.Name("DidUpdateDeviceModel")
 }
