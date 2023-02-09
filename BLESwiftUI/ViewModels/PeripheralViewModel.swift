@@ -14,6 +14,14 @@ class PeripheralViewModel: ObservableObject {
   var devices = DeviceModel(volumeLevel: 10)
 
   init() {
+    createObservers()
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+
+  private func createObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(didGetPeripheralData(_:)), name: Notification.Name.DidSendPeripheralData, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(didUpdateDeviceModel(_:)), name: Notification.Name.DidUpdateDeviceModel, object: nil)
   }
