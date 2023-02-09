@@ -14,8 +14,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private var centralManager: CBCentralManager!
   private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
-  @Published var peripherals = [Peripheral]()
-  @Published var devices = DeviceModel(volumeLevel: 10)
+  var peripherals = [Peripheral]()
+  var devices = DeviceModel(volumeLevel: 10)
   private var characteristic: CBCharacteristic!
   private var outCharacteristic: CBCharacteristic!
   private var inCharacteristic: CBCharacteristic!
@@ -27,7 +27,6 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   override init() {
     super .init()
     centralManager = CBCentralManager(delegate: self, queue: nil)
-//    centralManager.delegate = self
   }
 
   // MARK: Central Manager methods
