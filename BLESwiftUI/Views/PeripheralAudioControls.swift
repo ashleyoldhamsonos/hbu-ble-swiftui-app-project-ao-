@@ -58,8 +58,8 @@ struct PeripheralAudioControls: View {
              in: 0...100,
              onEditingChanged: { (_) in
         print("control", volumeLevel)
-        viewModel.setVolumeLevel()
         viewModel.devices.volumeLevel = volumeLevel
+        viewModel.setMaxVolumeLevel(value: volumeLevel)
         viewModel.hapticFeedback()
       },
              minimumValueLabel: Image(systemName: "\(sliderImage)"),

@@ -15,7 +15,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
   var peripherals = [Peripheral]()
-  var devices = DeviceModel(volumeLevel: 10)
+  var devices = DeviceModel()
   private var characteristic: CBCharacteristic!
   private var outCharacteristic: CBCharacteristic!
   private var inCharacteristic: CBCharacteristic!
@@ -218,17 +218,18 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
-  func setVolumeLevel() {
+  func setMaxVolumeLevel(value: Float) {
     print("volume change")
+    let uIntValue = UInt8(Int(value))
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.setVolumeLevel, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    myPeripheral.writeValue(Data([0x00, 0x02, 0x1c, uIntValue]), for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
    private func getGattSettings(characteristic: CBCharacteristic) {
     myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
-    myPeripheral.writeValue(Constants.DukeCommand.getVolumeLevel, for: inCharacteristic, type: .withoutResponse)
+    myPeripheral.writeValue(Constants.DukeCommand.getMaxVolumeLevel, for: inCharacteristic, type: .withoutResponse)
     myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
   }
 
@@ -271,6 +272,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private func parseHeadphoneSettings(characteristic: CBCharacteristic) {
     guard let data = characteristic.value else { return }
 
+//    print("DATA", data[3])
     /// PDU specific ID is found on third section of response. Returned as Decimal
     switch data[2] {
     case 9: // get product name
@@ -282,6 +284,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       (data[3] == 0) ? (devices.getANCMode = "Off") : (devices.getANCMode = "On")
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (devices.getSpatialAudio = "Off") : (devices.getSpatialAudio = "On")
+    case 27: // get max volume
+      devices.volumeLevel = Float(data[3])
+      updateDeviceModel()
     default:
       print("otherHeadphoneSetting", data[2])
     }

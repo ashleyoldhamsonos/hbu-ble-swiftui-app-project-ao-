@@ -32,6 +32,8 @@ struct Constants {
     static let getBatteryInformation = Data([0x00, 0x00, 0x04])
     static let getVolumeLevel = Data([0x00, 0x03, 0x03])
     static let setVolumeLevel = Data([0x00, 0x03, 0x04, 0x05])
+    static let getMaxVolumeLevel = Data([0x00, 0x02, 0x1b])
+    static let setMaxVolumeLevel = Data([0x00, 0x02, 0x1c]) // need a way of setting max volume eg.(Data([0x00, 0x02, 0x1c, hex value]))
   }
 
   struct PlaybackControlButton {
