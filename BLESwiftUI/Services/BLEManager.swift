@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreBluetooth
-import SwiftUI
+//import SwiftUI
 
 class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
