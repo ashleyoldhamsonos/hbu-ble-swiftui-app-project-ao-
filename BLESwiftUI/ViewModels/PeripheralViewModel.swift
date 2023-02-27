@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import BleDiscovery
 
 class PeripheralViewModel: ObservableObject {
 
@@ -86,5 +87,4 @@ class PeripheralViewModel: ObservableObject {
     let haptic = UINotificationFeedbackGenerator()
     haptic.notificationOccurred(.success)
   }
-  
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F4B103B29A7B4AD001B726E /* BleDiscovery in Frameworks */ = {isa = PBXBuildFile; productRef = 1F4B103A29A7B4AD001B726E /* BleDiscovery */; };
 		1F8ED2D929840B4300B61277 /* DeviceListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8ED2D829840B4300B61277 /* DeviceListRow.swift */; };
 		1F8ED2DF2993DDEC00B61277 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8ED2DE2993DDEC00B61277 /* Extensions.swift */; };
 		1F98FA322948AA4A00C07FE3 /* BLESwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA312948AA4A00C07FE3 /* BLESwiftUIApp.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F4B103829A7ADB0001B726E /* BleDiscovery */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BleDiscovery; path = ../../../Desktop/BleDiscovery; sourceTree = "<group>"; };
 		1F8ED2D829840B4300B61277 /* DeviceListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceListRow.swift; sourceTree = "<group>"; };
 		1F8ED2DE2993DDEC00B61277 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1F98FA2E2948AA4A00C07FE3 /* BLESwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLESwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,17 +53,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F4B103B29A7B4AD001B726E /* BleDiscovery in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F4B103729A7ADB0001B726E /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1F4B103829A7ADB0001B726E /* BleDiscovery */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		1F4B103929A7B4AD001B726E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1F98FA252948AA4A00C07FE3 = {
 			isa = PBXGroup;
 			children = (
+				1F4B103729A7ADB0001B726E /* Packages */,
 				1F98FA302948AA4A00C07FE3 /* BLESwiftUI */,
 				1F98FA2F2948AA4A00C07FE3 /* Products */,
+				1F4B103929A7B4AD001B726E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,6 +173,9 @@
 			dependencies = (
 			);
 			name = BLESwiftUI;
+			packageProductDependencies = (
+				1F4B103A29A7B4AD001B726E /* BleDiscovery */,
+			);
 			productName = BLESwiftUI;
 			productReference = 1F98FA2E2948AA4A00C07FE3 /* BLESwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -429,6 +452,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1F4B103A29A7B4AD001B726E /* BleDiscovery */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BleDiscovery;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1F98FA262948AA4A00C07FE3 /* Project object */;
 }

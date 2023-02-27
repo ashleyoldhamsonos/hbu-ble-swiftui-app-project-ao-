@@ -81,10 +81,10 @@ struct PeripheralDetail: View {
   }
 }
 
-struct PeripheralDetail_Previews: PreviewProvider {
-  static let viewModel = PeripheralViewModel()
-  static var previews: some View {
-    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), ancToggle: .constant(true), spatialToggle: .constant(true))
-      .environmentObject(viewModel)
-  }
-}
+//struct PeripheralDetail_Previews: PreviewProvider {
+//  static let viewModel = PeripheralViewModel()
+//  static var previews: some View {
+//    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), ancToggle: .constant(true), spatialToggle: .constant(true))
+//      .environmentObject(viewModel)
+//  }
+//}

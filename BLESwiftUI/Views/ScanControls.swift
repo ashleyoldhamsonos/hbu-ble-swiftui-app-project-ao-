@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import BleDiscovery
 
 struct ScanControls: View {
   @EnvironmentObject var viewModel: PeripheralViewModel
