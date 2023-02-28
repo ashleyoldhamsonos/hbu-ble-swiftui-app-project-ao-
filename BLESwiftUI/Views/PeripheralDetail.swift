@@ -49,6 +49,11 @@ struct PeripheralDetail: View {
       }).onChange(of: spatialToggle, perform: { newValue in
         newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
       })
+      .onAppear(perform: {
+        if viewModel.devices.getSpatialAudio ?? false {
+          spatialToggle = true
+        }
+      })
       .tint(Constants.CustomColor.toggleControlColor)
       .disabled(peripheral.name == Constants.gattServer ? false : true)
       .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
@@ -60,6 +65,11 @@ struct PeripheralDetail: View {
           viewModel.ancOff()
         } else {
           viewModel.ancOn()
+        }
+      })
+      .onAppear(perform: {
+        if viewModel.devices.getANCMode ?? false {
+          ancToggle = true
         }
       })
       .tint(Constants.CustomColor.toggleControlColor)

@@ -281,9 +281,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
         updateDeviceModel()
       }
     case 14: // get anc mode: Bool
-      (data[3] == 0) ? (devices.getANCMode = "Off") : (devices.getANCMode = "On")
+      (data[3] == 0) ? (devices.getANCMode = false) : (devices.getANCMode = true)
     case 18: // get spatial audio: Bool
-      (data[3] == 0) ? (devices.getSpatialAudio = "Off") : (devices.getSpatialAudio = "On")
+      (data[3] == 0) ? (devices.getSpatialAudio = false) : (devices.getSpatialAudio = true)
     case 27: // get max volume
       devices.volumeLevel = Float(data[3])
       updateDeviceModel()
@@ -336,7 +336,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func updateDeviceModel() {
-    let data = DeviceModel(name: devices.name, volumeLevel: devices.volumeLevel)
+    let data = DeviceModel(name: devices.name, getANCMode: devices.getANCMode, getSpatialAudio: devices.getSpatialAudio, volumeLevel: devices.volumeLevel)
     let newData = ["updatedDeviceModel": data]
     NotificationCenter.default.post(name: .DidUpdateDeviceModel, object: nil, userInfo: newData)
   }

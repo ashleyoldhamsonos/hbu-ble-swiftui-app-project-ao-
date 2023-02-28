@@ -9,7 +9,7 @@ import Foundation
 
 struct DeviceModel {
   var name: String?
-  var getANCMode: String?
-  var getSpatialAudio: String?
+  var getANCMode: Bool?
+  var getSpatialAudio: Bool?
   var volumeLevel: Float?
 }
