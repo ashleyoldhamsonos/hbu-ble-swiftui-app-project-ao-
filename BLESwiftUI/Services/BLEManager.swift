@@ -14,6 +14,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   private var centralManager: CBCentralManager!
   private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
+  @Published var isConnected = false
   var peripherals = [Peripheral]()
   var devices = DeviceModel()
   private var characteristic: CBCharacteristic!
@@ -63,12 +64,15 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       peripheralName = "Unknown"
     }
 
-    if peripheralName == Constants.gattServer {
-      myPeripheral = peripheral
-      myPeripheral.delegate = self
-      central.connect(myPeripheral)
-      stopScanning()
-    }
+//    if peripheralName == Constants.gattServer {
+//      myPeripheral = peripheral
+//      myPeripheral.delegate = self
+//      central.connect(myPeripheral)
+//      stopScanning()
+//    }
+
+    myPeripheral = peripheral
+//    myPeripheral.delegate = self
 
 //    let advertisementData = advertisementData.description
     let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue)
@@ -168,6 +172,10 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   func stopScanning() {
     centralManager.stopScan()
+  }
+
+  func disconnectDevice() {
+    centralManager.cancelPeripheralConnection(myPeripheral)
   }
 
   func ancOn() {
@@ -339,5 +347,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     let data = DeviceModel(name: devices.name, getANCMode: devices.getANCMode, getSpatialAudio: devices.getSpatialAudio, volumeLevel: devices.volumeLevel)
     let newData = ["updatedDeviceModel": data]
     NotificationCenter.default.post(name: .DidUpdateDeviceModel, object: nil, userInfo: newData)
+  }
+
+  func connect() {
+    centralManager.connect(myPeripheral)
+    myPeripheral.delegate = self
+//    print("connected to \(String(describing: myPeripheral))")
+    stopScanning()
+    isConnected = true
   }
 }

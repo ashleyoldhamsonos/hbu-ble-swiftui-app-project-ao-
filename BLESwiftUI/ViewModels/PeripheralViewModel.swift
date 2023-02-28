@@ -11,7 +11,8 @@ import SwiftUI
 class PeripheralViewModel: ObservableObject {
 
   @Published var peripherals = [Peripheral]()
-  var devices = DeviceModel()
+  @Published var devices = DeviceModel()
+  @Published var isConnected = false
 
   init() {
     createObservers()
@@ -39,7 +40,12 @@ class PeripheralViewModel: ObservableObject {
   }
 
   func startScanning() {
+//    peripherals = []
     BLEManager.shared.startScanning()
+  }
+
+  func disconnectDevice() {
+    BLEManager.shared.disconnectDevice()
   }
 
   func stopScanning() {
@@ -80,6 +86,10 @@ class PeripheralViewModel: ObservableObject {
 
   func setMaxVolumeLevel(value: Float) {
     BLEManager.shared.setMaxVolumeLevel(value: value)
+  }
+
+  func connect() {
+    BLEManager.shared.connect()
   }
 
   func hapticFeedback() {

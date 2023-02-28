@@ -12,89 +12,106 @@ struct PeripheralDetail: View {
   var peripheral: Peripheral
   @Binding var ancToggle: Bool
   @Binding var spatialToggle: Bool
+  @State var name: String?
 
   var body: some View {
-    Spacer()
 
-    ZStack {
-      Rectangle()
-        .fill(Color.init(.systemGray5))
-        .cornerRadius(12.0)
-        .frame(height: 225)
-      VStack(spacing: 25) {
-        Image(systemName: peripheral.icon)
-          .resizable()
-          .scaledToFit()
-          .frame(height: 80)
-        VStack(alignment: .leading, spacing: 10) {
-          Text("Product Name: \(peripheral.name)")
-          //      Text(peripheral.advertisingData)
-          if peripheral.name == Constants.gattServer {
-            Text("Device Name: \(viewModel.devices.name ?? "")")
-          } else {
-            Text("Device Name: Unknown")
-          }
-          Text("RSSI: \(peripheral.rssi)")
-        }
+    if !viewModel.isConnected {
+      Button {
+        viewModel.isConnected = true
+        viewModel.connect()
+      } label: {
+        Text("Connect")
       }
-    }
-    .padding(.horizontal)
-
-
-    Spacer()
-
-    VStack {
-      Toggle(isOn: $spatialToggle, label: {
-        Text("Spatial Audio")
-      }).onChange(of: spatialToggle, perform: { newValue in
-        newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
-      })
-      .onAppear(perform: {
-        if viewModel.devices.getSpatialAudio ?? false {
-          spatialToggle = true
-        }
-      })
-      .tint(Constants.CustomColor.toggleControlColor)
-      .disabled(peripheral.name == Constants.gattServer ? false : true)
-      .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
-
-      Toggle(isOn: $ancToggle, label: {
-        Text("ANC")
-      }).onChange(of: ancToggle, perform: { newValue in
-        if !newValue {
-          viewModel.ancOff()
-        } else {
-          viewModel.ancOn()
-        }
-      })
-      .onAppear(perform: {
-        if viewModel.devices.getANCMode ?? false {
-          ancToggle = true
-        }
-      })
-      .tint(Constants.CustomColor.toggleControlColor)
-      .disabled(peripheral.name == Constants.gattServer ? false : true)
-      .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
-
+    } else {
+      Spacer()
       ZStack {
         Rectangle()
           .fill(Color.init(.systemGray5))
           .cornerRadius(12.0)
-          .frame(height: 120)
-        PeripheralAudioControls(volumeLevel: viewModel.devices.volumeLevel ?? 50)
+          .frame(height: 225)
+        VStack(spacing: 25) {
+          Image(systemName: peripheral.icon)
+            .resizable()
+            .scaledToFit()
+            .frame(height: 80)
+          VStack(alignment: .leading, spacing: 10) {
+            Text("Product Name: \(peripheral.name)")
+            //      Text(peripheral.advertisingData)
+//            if peripheral.name == Constants.gattServer {
+            if viewModel.devices.name != nil {
+                Text("Device Name: \(viewModel.devices.name ?? "")")
+            } else {
+              Text("Device Name: Unknown")
+            }
+            Text("RSSI: \(peripheral.rssi)")
+          }
+        }
       }
+      .padding(.horizontal)
 
+
+      Spacer()
+
+      VStack {
+        Toggle(isOn: $spatialToggle, label: {
+          Text("Spatial Audio")
+        }).onChange(of: spatialToggle, perform: { newValue in
+          newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
+        })
+        .onAppear(perform: {
+          if viewModel.devices.getSpatialAudio ?? false {
+            spatialToggle = true
+          }
+        })
+        .tint(Constants.CustomColor.toggleControlColor)
+        .disabled(peripheral.name == Constants.gattServer ? false : true)
+        .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
+
+        Toggle(isOn: $ancToggle, label: {
+          Text("ANC")
+        }).onChange(of: ancToggle, perform: { newValue in
+          if !newValue {
+            viewModel.ancOff()
+          } else {
+            viewModel.ancOn()
+          }
+        })
+        .onAppear(perform: {
+          if viewModel.devices.getANCMode ?? false {
+            ancToggle = true
+          }
+        })
+        .tint(Constants.CustomColor.toggleControlColor)
+        .disabled(peripheral.name == Constants.gattServer ? false : true)
+        .opacity(peripheral.name == Constants.gattServer ? 1 : 0)
+
+        ZStack {
+          Rectangle()
+            .fill(Color.init(.systemGray5))
+            .cornerRadius(12.0)
+            .frame(height: 120)
+          PeripheralAudioControls(volumeLevel: viewModel.devices.volumeLevel ?? 50)
+        }
+
+      }
+      //    .navigationTitle(peripheral.name)
+          .navigationBarTitleDisplayMode(.inline)
+          .navigationBarItems(trailing: Button(action: {
+            viewModel.disconnectDevice()
+            viewModel.isConnected = false
+          }, label: {
+            Text("Disconnect")
+          }))
+          .padding()
     }
-//    .navigationTitle(peripheral.name)
-    .navigationBarTitleDisplayMode(.inline)
-    .padding()
   }
 }
 
-struct PeripheralDetail_Previews: PreviewProvider {
-  static let viewModel = PeripheralViewModel()
-  static var previews: some View {
-    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), ancToggle: .constant(true), spatialToggle: .constant(true))
-      .environmentObject(viewModel)
-  }
-}
+//struct PeripheralDetail_Previews: PreviewProvider {
+//  static let viewModel = PeripheralViewModel()
+//  static var previews: some View {
+//    PeripheralDetail(peripheral: viewModel.peripherals.first ?? Peripheral(id: 0, name: "Device 1", rssi: -33), ancToggle: .constant(true), spatialToggle: .constant(true))
+//      .environmentObject(viewModel)
+//  }
+//}
