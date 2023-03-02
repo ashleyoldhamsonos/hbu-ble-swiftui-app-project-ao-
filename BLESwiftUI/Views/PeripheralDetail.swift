@@ -19,10 +19,11 @@ struct PeripheralDetail: View {
     if !viewModel.isConnected {
       Button {
         viewModel.isConnected = true
-        viewModel.connect()
+        viewModel.connect(device: peripheral.peripheral)
       } label: {
         Text("Connect")
       }
+      .buttonStyle(GrowingButton())
     } else {
       Spacer()
       ZStack {
@@ -39,8 +40,8 @@ struct PeripheralDetail: View {
             Text("Product Name: \(peripheral.name)")
             //      Text(peripheral.advertisingData)
 //            if peripheral.name == Constants.gattServer {
-            if viewModel.devices.name != nil {
-                Text("Device Name: \(viewModel.devices.name ?? "")")
+            if viewModel.device.name != nil {
+                Text("Device Name: \(viewModel.device.name ?? "")")
             } else {
               Text("Device Name: Unknown")
             }
@@ -60,7 +61,7 @@ struct PeripheralDetail: View {
           newValue ? viewModel.spatialAudioOn() : viewModel.spatialAudioOff()
         })
         .onAppear(perform: {
-          if viewModel.devices.getSpatialAudio ?? false {
+          if viewModel.device.getSpatialAudio ?? false {
             spatialToggle = true
           }
         })
@@ -78,7 +79,7 @@ struct PeripheralDetail: View {
           }
         })
         .onAppear(perform: {
-          if viewModel.devices.getANCMode ?? false {
+          if viewModel.device.getANCMode ?? false {
             ancToggle = true
           }
         })
@@ -91,7 +92,7 @@ struct PeripheralDetail: View {
             .fill(Color.init(.systemGray5))
             .cornerRadius(12.0)
             .frame(height: 120)
-          PeripheralAudioControls(volumeLevel: viewModel.devices.volumeLevel ?? 50)
+          PeripheralAudioControls(volumeLevel: viewModel.device.volumeLevel ?? 50)
         }
 
       }

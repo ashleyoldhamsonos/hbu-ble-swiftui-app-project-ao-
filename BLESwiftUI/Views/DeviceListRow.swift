@@ -21,8 +21,8 @@ struct DeviceListRow: View {
     }
 }
 
-struct DeviceListRow_Previews: PreviewProvider {
-    static var previews: some View {
-      DeviceListRow(peripheral: Peripheral(id: 0, name: "iPhone", rssi: -33))
-    }
-}
+//struct DeviceListRow_Previews: PreviewProvider {
+//    static var previews: some View {
+//      DeviceListRow(peripheral: Peripheral(id: 0, name: "iPhone", peripheral: peripheral.peripheral, rssi: -33))
+//    }
+//}

@@ -7,16 +7,15 @@
 
 import Foundation
 import CoreBluetooth
-//import SwiftUI
 
 class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
   private var centralManager: CBCentralManager!
-  private var myPeripheral: CBPeripheral!
   @Published var isBluetoothOn = false
   @Published var isConnected = false
-  var peripherals = [Peripheral]()
-  var devices = DeviceModel()
+  private var peripherals = [Peripheral]()
+  private var connectedPeripheral: CBPeripheral!
+  private var device = DeviceModel()
   private var characteristic: CBCharacteristic!
   private var outCharacteristic: CBCharacteristic!
   private var inCharacteristic: CBCharacteristic!
@@ -32,20 +31,21 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
   // MARK: Central Manager methods
 
+  ///method must be implemented before we scan and is called whenever there is a change with Bluetooth state
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
 
     switch central.state {
     case .poweredOn:
       print("Is powered on")
       isBluetoothOn = true
-      centralManager.scanForPeripherals(withServices: [Constants.sonosService])
+      startScanning()
     case .poweredOff:
       print("Is powered off")
       isBluetoothOn = false
     case .unsupported:
       print("Is unsupported")
     case .unauthorized:
-      print("Is unauthorised")
+      print("Is unauthorised. User denies Bluetooth app access")
     case .unknown:
       print("Is unknown")
     case .resetting:
@@ -55,6 +55,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     }
   }
 
+  /// method returns devices that advertise the sonos service as requested within the startScanning method
   func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
 
     if let name = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
@@ -70,20 +71,25 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 //      central.connect(myPeripheral)
 //      stopScanning()
 //    }
-
-    myPeripheral = peripheral
-//    myPeripheral.delegate = self
+    connectedPeripheral = peripheral
 
 //    let advertisementData = advertisementData.description
-    let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, rssi: RSSI.intValue)
+    let newPeripheral = Peripheral(id: peripherals.count, name: peripheralName, peripheral: connectedPeripheral, rssi: RSSI.intValue)
     print(newPeripheral.name)
     peripherals.append(newPeripheral)
     sendPeripheralData()
   }
 
+  /// gets called on successful connection to peripheral
   func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-//    myPeripheral.discoverServices([CBUUID(string: "0x180F")]) //battery service
-    myPeripheral.discoverServices([Constants.sonosService])
+    print("Connected", connectedPeripheral)
+    stopScanning()
+    connectedPeripheral.discoverServices([Constants.sonosService])
+  }
+
+  func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+    device = DeviceModel()
+    print("Disconnected", connectedPeripheral)
   }
 
   // MARK: Peripheral methods
@@ -96,9 +102,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     } else {
       for service in services {
         if service.uuid == Constants.sonosService {
-          myPeripheral.discoverCharacteristics([Constants.sonosINCharacteristic, Constants.sonosOUTCharacteristic], for: service)
+          connectedPeripheral.discoverCharacteristics([Constants.sonosINCharacteristic, Constants.sonosOUTCharacteristic], for: service)
         } else {
-          myPeripheral.discoverCharacteristics(nil, for: service)
+          connectedPeripheral.discoverCharacteristics(nil, for: service)
         }
       }
 //      print("Discovered services: \(services)")
@@ -117,8 +123,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
 
       if characteristic.uuid == Constants.sonosOUTCharacteristic {
         outCharacteristic = characteristic
-        myPeripheral.setNotifyValue(true, for: outCharacteristic)
-        myPeripheral.readValue(for: outCharacteristic)
+        connectedPeripheral.setNotifyValue(true, for: outCharacteristic)
+        connectedPeripheral.readValue(for: outCharacteristic)
 
         foundOutCharacteristic = true
       }
@@ -175,70 +181,72 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func disconnectDevice() {
-    centralManager.cancelPeripheralConnection(myPeripheral)
+    centralManager.cancelPeripheralConnection(connectedPeripheral)
+//    device = DeviceModel()
+    resetDeviceModel()
   }
 
   func ancOn() {
     print("anc ON")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
     print("play")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.play, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func pauseCommand() {
     print("pause")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.pause, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func skipToNextTrack() {
     print("next track")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.skipToNextTrack, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.skipToNextTrack, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func skipToPreviousTrack() {
     print("previous track")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.skipToPreviousTrack, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.skipToPreviousTrack, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func spatialAudioOn() {
     print("spatial on")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func spatialAudioOff() {
     print("spatial off")
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.spatialAudioModeOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func setMaxVolumeLevel(value: Float) {
     print("volume change")
     let uIntValue = UInt8(Int(value))
     guard let characteristic = self.inCharacteristic else { return }
-    myPeripheral.writeValue(Data([0x00, 0x02, 0x1c, uIntValue]), for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Data([0x00, 0x02, 0x1c, uIntValue]), for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
    private func getGattSettings(characteristic: CBCharacteristic) {
-    myPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
-    myPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
-    myPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
-    myPeripheral.writeValue(Constants.DukeCommand.getMaxVolumeLevel, for: inCharacteristic, type: .withoutResponse)
-    myPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.getMaxVolumeLevel, for: inCharacteristic, type: .withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
   }
 
   private func responseMuseFeatureID(characteristic: CBCharacteristic) {
@@ -285,15 +293,18 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     switch data[2] {
     case 9: // get product name
       if let deviceName = String(data: data[4...], encoding: .utf8) {
-        devices.name = deviceName
+        device.name = deviceName
         updateDeviceModel()
       }
     case 14: // get anc mode: Bool
-      (data[3] == 0) ? (devices.getANCMode = false) : (devices.getANCMode = true)
+      (data[3] == 0) ? (device.getANCMode = false) : (device.getANCMode = true)
+      updateDeviceModel()
     case 18: // get spatial audio: Bool
-      (data[3] == 0) ? (devices.getSpatialAudio = false) : (devices.getSpatialAudio = true)
+      (data[3] == 0) ? (device.getSpatialAudio = false) : (device.getSpatialAudio = true)
+      updateDeviceModel()
+      print("SPATIAL", device.getSpatialAudio)
     case 27: // get max volume
-      devices.volumeLevel = Float(data[3])
+      device.volumeLevel = Float(data[3])
       updateDeviceModel()
     default:
       print("otherHeadphoneSetting", data[2])
@@ -308,7 +319,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     /// PDU specific ID is found on third section of response. Returned as Decimal
     switch data[2] {
     case 3: // get volume level
-      devices.volumeLevel = Float(truncating: data[3] as NSNumber)
+      device.volumeLevel = Float(truncating: data[3] as NSNumber)
       print("volume", data[3])
     default:
       print("otherHeadphoneVolume", data[2])
@@ -338,22 +349,27 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func sendPeripheralData() {
-    let data = Peripheral(id: peripherals.count, name: peripheralName, rssi: rssi)
+    let data = Peripheral(id: peripherals.count, name: peripheralName, peripheral: connectedPeripheral, rssi: rssi)
     let newData = ["newPeripheral": data]
     NotificationCenter.default.post(name: .DidSendPeripheralData, object: nil, userInfo: newData)
   }
 
   func updateDeviceModel() {
-    let data = DeviceModel(name: devices.name, getANCMode: devices.getANCMode, getSpatialAudio: devices.getSpatialAudio, volumeLevel: devices.volumeLevel)
+    let data = DeviceModel(name: device.name, getANCMode: device.getANCMode, getSpatialAudio: device.getSpatialAudio, volumeLevel: device.volumeLevel)
     let newData = ["updatedDeviceModel": data]
     NotificationCenter.default.post(name: .DidUpdateDeviceModel, object: nil, userInfo: newData)
   }
 
-  func connect() {
-    centralManager.connect(myPeripheral)
-    myPeripheral.delegate = self
-//    print("connected to \(String(describing: myPeripheral))")
-    stopScanning()
-    isConnected = true
+  func resetDeviceModel() {
+    let data = DeviceModel()
+    let newData = ["resetDeviceModel": data]
+    NotificationCenter.default.post(name: .DidResetDeviceModel, object: nil, userInfo: newData)
+  }
+
+  func connect(device: CBPeripheral) {
+    centralManager.connect(device)
+    connectedPeripheral = device
+    connectedPeripheral.delegate = self
+    print("CONNECTING TO \(device)")
   }
 }

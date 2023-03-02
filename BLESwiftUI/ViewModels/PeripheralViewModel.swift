@@ -7,11 +7,12 @@
 
 import UIKit
 import SwiftUI
+import CoreBluetooth
 
 class PeripheralViewModel: ObservableObject {
 
   @Published var peripherals = [Peripheral]()
-  @Published var devices = DeviceModel()
+  @Published var device = DeviceModel()
   @Published var isConnected = false
 
   init() {
@@ -36,16 +37,18 @@ class PeripheralViewModel: ObservableObject {
   @objc func didUpdateDeviceModel(_ notification: Notification) {
     guard let newModelData = notification.userInfo?["updatedDeviceModel"] as? DeviceModel else { return }
 
-    devices = newModelData
+    device = newModelData
+  }
+
+  @objc func didResetDeviceModel(_ notification: Notification) {
+    guard let newModelData = notification.userInfo?["resetDeviceModel"] as? DeviceModel else { return }
+
+    device = newModelData
   }
 
   func startScanning() {
-//    peripherals = []
+    peripherals = []
     BLEManager.shared.startScanning()
-  }
-
-  func disconnectDevice() {
-    BLEManager.shared.disconnectDevice()
   }
 
   func stopScanning() {
@@ -88,8 +91,16 @@ class PeripheralViewModel: ObservableObject {
     BLEManager.shared.setMaxVolumeLevel(value: value)
   }
 
-  func connect() {
-    BLEManager.shared.connect()
+  func connect(device: CBPeripheral) {
+    isConnected = true
+    BLEManager.shared.connect(device: device)
+  }
+
+  func disconnectDevice() {
+    isConnected = false
+    BLEManager.shared.disconnectDevice()
+    NotificationCenter.default.addObserver(self, selector: #selector(didResetDeviceModel(_:)), name: Notification.Name.DidResetDeviceModel, object: nil)
+//    device = DeviceModel()
   }
 
   func hapticFeedback() {

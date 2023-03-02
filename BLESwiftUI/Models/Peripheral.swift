@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import CoreBluetooth
 
 struct Peripheral: Identifiable {
   let id: Int
   let name: String
+  let peripheral: CBPeripheral
   let rssi: Int
   var icon: String {
     return getIconName(name)
