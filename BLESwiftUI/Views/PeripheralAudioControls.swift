@@ -42,6 +42,12 @@ struct PeripheralAudioControls: View {
             .resizable()
             .frame(width: Constants.PlaybackControlButton.playPauseWidth, height: Constants.PlaybackControlButton.playPauseHeight)
             .foregroundColor(Constants.CustomColor.buttonControlColor)
+        }.onAppear {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            if viewModel.device.isPlaying ?? false {
+              playToggle = true
+            }
+          })
         }
 
         Button {

@@ -247,6 +247,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     connectedPeripheral.writeValue(Constants.DukeCommand.getSpatialAudioMode, for: inCharacteristic, type: .withoutResponse)
     connectedPeripheral.writeValue(Constants.DukeCommand.getMaxVolumeLevel, for: inCharacteristic, type: .withoutResponse)
     connectedPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
+    connectedPeripheral.writeValue(Constants.DukeCommand.getPlaybackStatus, for: inCharacteristic, type: .withoutResponse)
   }
 
   private func responseMuseFeatureID(characteristic: CBCharacteristic) {
@@ -263,7 +264,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     case 3: // auxHeadphonesVolume
       parseHeadphoneVolume(characteristic: characteristic)
     case 4: // auxHeadphonesPlayback
-      print("deal with headphones playback")
+      parseHeadphonePlayback(characteristic: characteristic)
     case 5: // auxHeadphonesPlaybackMetadata
       print("deal with playback metadata")
     case 6: // auxHeadphonesSoundSwap
@@ -302,7 +303,6 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     case 18: // get spatial audio: Bool
       (data[3] == 0) ? (device.getSpatialAudio = false) : (device.getSpatialAudio = true)
       updateDeviceModel()
-      print("SPATIAL", device.getSpatialAudio)
     case 27: // get max volume
       device.volumeLevel = Float(data[3])
       updateDeviceModel()
@@ -323,6 +323,17 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
       print("volume", data[3])
     default:
       print("otherHeadphoneVolume", data[2])
+    }
+  }
+
+  private func parseHeadphonePlayback(characteristic: CBCharacteristic) {
+    guard let data = characteristic.value else { return }
+    switch data[2] {
+    case 7: // get isPlaying Boolean
+      (data[3] == 0) ? (device.isPlaying = false) : (device.isPlaying = true)
+      updateDeviceModel()
+    default:
+      break
     }
   }
 
@@ -348,6 +359,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     }
   }
 
+  // MARK: NotificationCenter
+
   func sendPeripheralData() {
     let data = Peripheral(id: peripherals.count, name: peripheralName, peripheral: connectedPeripheral, rssi: rssi)
     let newData = ["newPeripheral": data]
@@ -355,7 +368,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   }
 
   func updateDeviceModel() {
-    let data = DeviceModel(name: device.name, getANCMode: device.getANCMode, getSpatialAudio: device.getSpatialAudio, volumeLevel: device.volumeLevel)
+    let data = DeviceModel(name: device.name, getANCMode: device.getANCMode, getSpatialAudio: device.getSpatialAudio, volumeLevel: device.volumeLevel, isPlaying: device.isPlaying)
     let newData = ["updatedDeviceModel": data]
     NotificationCenter.default.post(name: .DidUpdateDeviceModel, object: nil, userInfo: newData)
   }

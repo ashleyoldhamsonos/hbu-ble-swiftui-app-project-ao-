@@ -12,4 +12,5 @@ struct DeviceModel {
   var getANCMode: Bool?
   var getSpatialAudio: Bool?
   var volumeLevel: Float?
+  var isPlaying: Bool?
 }
