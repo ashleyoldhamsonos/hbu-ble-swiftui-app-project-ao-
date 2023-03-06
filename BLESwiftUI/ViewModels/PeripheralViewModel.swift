@@ -46,6 +46,11 @@ class PeripheralViewModel: ObservableObject {
     device = newModelData
   }
 
+  /// Use one function for writing all values to peripheral ?
+  func writeBLEData(data: Data) {
+    BLEManager.shared.writeData(data: data)
+  }
+
   func startScanning() {
     peripherals = []
     BLEManager.shared.startScanning()

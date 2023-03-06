@@ -186,6 +186,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     resetDeviceModel()
   }
 
+  /// Use one function for writing all values to peripheral ?
+  func writeData(data: Data) {
+    print("\(data)")
+    guard let characteristic = self.inCharacteristic else { return }
+    connectedPeripheral.writeValue(data, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+  }
+
   func ancOn() {
     print("anc ON")
     guard let characteristic = self.inCharacteristic else { return }
