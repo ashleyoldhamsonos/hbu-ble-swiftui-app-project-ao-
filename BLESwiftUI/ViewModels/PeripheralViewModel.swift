@@ -14,6 +14,7 @@ class PeripheralViewModel: ObservableObject {
   @Published var peripherals = [Peripheral]()
   @Published var device = DeviceModel()
   @Published var isConnected = false
+  @Published var isBluetoothOn = false
 
   init() {
     createObservers()
@@ -26,6 +27,7 @@ class PeripheralViewModel: ObservableObject {
   private func createObservers() {
     NotificationCenter.default.addObserver(self, selector: #selector(didGetPeripheralData(_:)), name: Notification.Name.DidSendPeripheralData, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(didUpdateDeviceModel(_:)), name: Notification.Name.DidUpdateDeviceModel, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didUpdateBleStatus(_:)), name: Notification.Name.DidUpdateBleStatus, object: nil)
   }
 
   @objc func didGetPeripheralData(_ notification: Notification) {
@@ -44,6 +46,12 @@ class PeripheralViewModel: ObservableObject {
     guard let newModelData = notification.userInfo?["resetDeviceModel"] as? DeviceModel else { return }
 
     device = newModelData
+  }
+
+  @objc func didUpdateBleStatus(_ notification: Notification) {
+    guard let newModelData = notification.userInfo?["updateBleStatus"] as? Bool else { return }
+
+    self.isBluetoothOn = newModelData
   }
 
   /// Use one function for writing all values to peripheral ?

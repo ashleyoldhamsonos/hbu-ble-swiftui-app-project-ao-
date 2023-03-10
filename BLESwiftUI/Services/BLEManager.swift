@@ -38,6 +38,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     case .poweredOn:
       print("Is powered on")
       isBluetoothOn = true
+//      updateBleStatus(status: true)
       startScanning()
     case .poweredOff:
       print("Is powered off")
@@ -255,6 +256,9 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     connectedPeripheral.writeValue(Constants.DukeCommand.getMaxVolumeLevel, for: inCharacteristic, type: .withoutResponse)
     connectedPeripheral.writeValue(Constants.DukeCommand.getBatteryInformation, for: inCharacteristic, type: .withoutResponse)
     connectedPeripheral.writeValue(Constants.DukeCommand.getPlaybackStatus, for: inCharacteristic, type: .withoutResponse)
+
+     /// used to check maximum mtu length allowed with connected device
+//    connectedPeripheral.maximumWriteValueLength(for: .withoutResponse)
   }
 
   private func responseMuseFeatureID(characteristic: CBCharacteristic) {
@@ -384,6 +388,12 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     let data = DeviceModel()
     let newData = ["resetDeviceModel": data]
     NotificationCenter.default.post(name: .DidResetDeviceModel, object: nil, userInfo: newData)
+  }
+
+  func updateBleStatus(status: Bool) {
+    let data = status
+    let newData = ["updateBleStatus": data]
+    NotificationCenter.default.post(name: .DidUpdateBleStatus, object: nil, userInfo: newData)
   }
 
   func connect(device: CBPeripheral) {

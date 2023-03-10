@@ -11,4 +11,5 @@ extension Notification.Name {
   static let DidSendPeripheralData = Notification.Name("DidSendPeripheralData")
   static let DidUpdateDeviceModel = Notification.Name("DidUpdateDeviceModel")
   static let DidResetDeviceModel = Notification.Name("DidResetDeviceModel")
+  static let DidUpdateBleStatus = Notification.Name("DidUpdateBleStatus")
 }
