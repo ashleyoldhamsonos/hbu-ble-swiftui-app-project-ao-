@@ -197,13 +197,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
   func ancOn() {
     print("anc ON")
     guard let characteristic = self.inCharacteristic else { return }
-    connectedPeripheral.writeValue(Constants.DukeCommand.switchAncOn, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Data([AuxDevicePdu.command.rawValue, AuxHeadphones_NamespaceId.auxHeadphonesSettings.rawValue, AuxHeadphonesSettings_PduId.setAncMode.rawValue, AuxHeadphonesCommand_Anc.ancOn.rawValue]), for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func ancOff() {
     print("anc OFF")
     guard let characteristic = self.inCharacteristic else { return }
-    connectedPeripheral.writeValue(Constants.DukeCommand.switchAncOff, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
+    connectedPeripheral.writeValue(Data([AuxDevicePdu.command.rawValue, AuxHeadphones_NamespaceId.auxHeadphonesSettings.rawValue, AuxHeadphonesSettings_PduId.setAncMode.rawValue, AuxHeadphonesCommand_Anc.ancOff.rawValue]), for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
   func playCommand() {
@@ -249,6 +249,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate, CBPeriph
     connectedPeripheral.writeValue(Data([0x00, 0x02, 0x1c, uIntValue]), for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
   }
 
+  /// function called when connected to Peripheral. Recieves data to update DeviceModel
    private func getGattSettings(characteristic: CBCharacteristic) {
     connectedPeripheral.writeValue(Constants.DukeCommand.getAncMode, for: inCharacteristic, type: .withoutResponse)
     connectedPeripheral.writeValue(Constants.DukeCommand.getProductName, for: inCharacteristic, type: .withoutResponse)

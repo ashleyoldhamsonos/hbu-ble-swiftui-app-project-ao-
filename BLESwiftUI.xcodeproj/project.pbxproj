@@ -23,6 +23,7 @@
 		1F98FA6229561F1E00C07FE3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F98FA6129561F1E00C07FE3 /* Constants.swift */; };
 		1FC7051D29706C0000EB191B /* DeviceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC7051C29706C0000EB191B /* DeviceModel.swift */; };
 		1FC70524297EA4B500EB191B /* PeripheralAudioControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC70523297EA4B500EB191B /* PeripheralAudioControls.swift */; };
+		1FEEB24329BB75040026AD7A /* DukeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEEB24229BB75040026AD7A /* DukeCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		1FC7051C29706C0000EB191B /* DeviceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceModel.swift; sourceTree = "<group>"; };
 		1FC70522297DD4E400EB191B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1FC70523297EA4B500EB191B /* PeripheralAudioControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralAudioControls.swift; sourceTree = "<group>"; };
+		1FEEB24229BB75040026AD7A /* DukeCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DukeCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				1FC705212977061B00EB191B /* ViewModels */,
 				1F98FA6129561F1E00C07FE3 /* Constants.swift */,
 				1F8ED2DE2993DDEC00B61277 /* Extensions.swift */,
+				1FEEB24229BB75040026AD7A /* DukeCommand.swift */,
 				1F98FA352948AA4C00C07FE3 /* Assets.xcassets */,
 				1F98FA372948AA4C00C07FE3 /* Preview Content */,
 			);
@@ -220,6 +223,7 @@
 				1FC7051D29706C0000EB191B /* DeviceModel.swift in Sources */,
 				1F98FA342948AA4A00C07FE3 /* ContentView.swift in Sources */,
 				1F98FA322948AA4A00C07FE3 /* BLESwiftUIApp.swift in Sources */,
+				1FEEB24329BB75040026AD7A /* DukeCommand.swift in Sources */,
 				1F8ED2DF2993DDEC00B61277 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
